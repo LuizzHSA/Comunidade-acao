@@ -1,8 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import '../models/models.dart';
+import '../services/firestore_service.dart';
 
 class AppState extends ChangeNotifier {
+  final _service = FirestoreService.instance;
+  StreamSubscription? _campaignsSub;
+  StreamSubscription? _donationsSub;
+  String? _currentUserId;
+
+  bool get isCloudConnected => _currentUserId != null;
   UserProfile _user = UserProfile(
     name: 'Ana Paula',
     email: 'ana.paula@exemplo.com.br',
@@ -317,16 +326,94 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void login(String email, String password) {
-    _isAuthenticated = true;
-    _user = _user.copyWith(email: email);
-    notifyListeners();
+  /// Login via Firebase Auth. Retorna mensagem de erro ou null em caso de sucesso.
+  /// A conta de demonstração continua funcionando: se `ana.paula@exemplo.com.br`
+  /// com senha `123456` ainda não existir no Firebase, é criada automaticamente.
+  Future<String?> login(String email, String password) async {
+    try {
+      final cred = await _service.signIn(email, password);
+      _currentUserId = cred.user?.uid;
+      _isAuthenticated = true;
+      _user = _user.copyWith(email: email);
+      _startSync();
+      notifyListeners();
+      return null;
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'wrong-password':
+        case 'invalid-credential':
+          return 'E-mail ou senha incorretos.';
+        case 'invalid-email':
+          return 'E-mail inválido.';
+        case 'user-disabled':
+          return 'Conta desativada.';
+        case 'weak-password':
+          return 'A senha precisa ter no mínimo 6 caracteres.';
+        case 'network-request-failed':
+          return 'Sem conexão. Verifique sua internet.';
+        default:
+          return 'Não foi possível entrar: ${e.message ?? e.code}';
+      }
+    } catch (_) {
+      // Firebase indisponível: modo demo offline.
+      _isAuthenticated = true;
+      _user = _user.copyWith(email: email);
+      notifyListeners();
+      return null;
+    }
+  }
+
+  /// Inicia as streams do Firestore. Em caso de falha, o app segue
+  /// funcionando com os dados demo em memória.
+  void _startSync() {
+    _campaignsSub?.cancel();
+    _donationsSub?.cancel();
+
+    try {
+      _campaignsSub = _service.campaignsStream().listen(
+        (remote) {
+          if (remote.isNotEmpty) {
+            _campaigns = remote;
+            notifyListeners();
+          }
+        },
+        onError: (_) {},
+      );
+
+      final uid = _currentUserId;
+      if (uid != null) {
+        _donationsSub = _service.donationsStream(uid).listen(
+          (remote) {
+            if (remote.isNotEmpty) {
+              _donationHistory
+                ..clear()
+                ..addAll(remote);
+              notifyListeners();
+            }
+          },
+          onError: (_) {},
+        );
+      }
+
+      // Seed inicial (ignora falhas: segue em modo demo).
+      _service.seedIfEmpty(demoCampaigns: _campaigns).catchError((_) {});
+    } catch (_) {
+      // Firestore não disponível — modo demo.
+    }
   }
 
   void logout() {
+    _campaignsSub?.cancel();
+    _donationsSub?.cancel();
+    _campaignsSub = null;
+    _donationsSub = null;
+    _currentUserId = null;
     _isAuthenticated = false;
     _currentNavIndex = 0;
     notifyListeners();
+    try {
+      _service.signOut().catchError((_) {});
+    } catch (_) {}
   }
 
   void setNavIndex(int index) {
@@ -406,6 +493,25 @@ class AppState extends ChangeNotifier {
       totalItemsDonated: _user.totalItemsDonated + (total > 0 ? total : 1),
     );
 
+    // Grava no Firestore (silencioso: se falhar, segue com dado local).
+    if (isCloudConnected) {
+      _service
+          .addDonation(DonationRecord(
+            id: newRecord.id,
+            campaignId: newRecord.campaignId,
+            campaignTitle: newRecord.campaignTitle,
+            date: newRecord.date,
+            itemsWithQty: newRecord.itemsWithQty,
+            totalCount: newRecord.totalCount,
+            deliveryMethod: newRecord.deliveryMethod,
+            address: newRecord.address,
+            status: newRecord.status,
+            receiptCode: newRecord.receiptCode,
+            userId: _currentUserId,
+          ))
+          .catchError((_) {});
+    }
+
     notifyListeners();
     return newRecord;
   }
@@ -451,7 +557,20 @@ class AppState extends ChangeNotifier {
     );
 
     _campaigns.insert(0, newCampaign);
+
+    // Grava no Firestore (silencioso: se falhar, segue com dado local).
+    if (isCloudConnected) {
+      _service.addCampaign(newCampaign).catchError((_) {});
+    }
+
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _campaignsSub?.cancel();
+    _donationsSub?.cancel();
+    super.dispose();
   }
 }
 

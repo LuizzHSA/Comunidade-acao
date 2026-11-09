@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'firebase_options.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_nav_screen.dart';
 import 'screens_windows/windows_shell.dart';
@@ -8,8 +11,11 @@ import 'state/app_state.dart';
 import 'theme/app_theme.dart';
 import 'theme/fluent_theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => AppState(),
@@ -27,7 +33,8 @@ class ComunidadeEmAcaoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, state, child) {
-        final isDesktopPlatform = !kIsWeb &&
+        final isDesktopPlatform =
+            !kIsWeb &&
             (defaultTargetPlatform == TargetPlatform.windows ||
                 defaultTargetPlatform == TargetPlatform.macOS ||
                 defaultTargetPlatform == TargetPlatform.linux);
@@ -40,7 +47,8 @@ class ComunidadeEmAcaoApp extends StatelessWidget {
               : AppTheme.lightTheme,
           home: LayoutBuilder(
             builder: (context, constraints) {
-              final useWindows = initialWindowsMode ??
+              final useWindows =
+                  initialWindowsMode ??
                   (state.preferWindowsLayout ||
                       (isDesktopPlatform && constraints.maxWidth >= 700) ||
                       constraints.maxWidth >= 900);

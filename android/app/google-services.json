@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "875713020000",
+    "project_id": "mobile-vini",
+    "storage_bucket": "mobile-vini.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875713020000:android:0b0a6bdcaba6413ed8c305",
+        "android_client_info": {
+          "package_name": "com.comunidadeemacao.comunidade_em_acao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875713020000-pudmr8nqr8rgif0b7intnckipfq0pn6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX8f8Ckt66HHnATvfAq6z764FlL2rOh-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875713020000-pudmr8nqr8rgif0b7intnckipfq0pn6k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "875713020000-f4g0vgu0mfr97nv7cc0eqie5asi59u5f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.comunidade.doarApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

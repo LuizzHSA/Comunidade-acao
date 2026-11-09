@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "mobile-vini",
+          "appId": "1:875713020000:android:0b0a6bdcaba6413ed8c305",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "mobile-vini",
+          "configurations": {
+            "android": "1:875713020000:android:0b0a6bdcaba6413ed8c305",
+            "ios": "1:875713020000:ios:85c777fe7d55f253d8c305",
+            "web": "1:875713020000:web:0f990038c87dba41d8c305"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "comunidade-em-acao",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

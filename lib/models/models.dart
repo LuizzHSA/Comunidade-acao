@@ -14,6 +14,24 @@ class DonationItem {
     required this.maxNeeded,
     required this.iconType,
   });
+
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'name': name,
+    'unitDescription': unitDescription,
+    'metaRemainingText': metaRemainingText,
+    'maxNeeded': maxNeeded,
+    'iconType': iconType,
+  };
+
+  factory DonationItem.fromMap(Map<String, dynamic> map) => DonationItem(
+    id: map['id'] as String? ?? '',
+    name: map['name'] as String? ?? '',
+    unitDescription: map['unitDescription'] as String? ?? 'unidades',
+    metaRemainingText: map['metaRemainingText'] as String? ?? '',
+    maxNeeded: (map['maxNeeded'] as num?)?.toInt() ?? 0,
+    iconType: map['iconType'] as String? ?? 'volunteer_activism',
+  );
 }
 
 class Campaign {
@@ -27,7 +45,8 @@ class Campaign {
   final bool isVerified;
   final String category; // 'Alimentos', 'Roupas & Agasalhos', 'Dinheiro / Pix', 'Voluntariado', 'Brinquedos'
   final String location;
-  final String? urgencyBadge; // 'Urgência Média', 'Quase lá!', 'Destaque do Mês'
+  final String?
+  urgencyBadge; // 'Urgência Média', 'Quase lá!', 'Destaque do Mês'
   final String? urgencyBadgeColor; // 'error', 'secondary', 'tertiary'
   final int daysLeft;
   final double progressPercent; // 0.0 to 1.0
@@ -64,6 +83,64 @@ class Campaign {
     this.volunteersNeeded,
     this.volunteerDateInfo,
   });
+
+  Map<String, dynamic> toMap() => {
+    'title': title,
+    'subtitle': subtitle,
+    'description': description,
+    'highlightText': highlightText,
+    'organizationName': organizationName,
+    'organizationYears': organizationYears,
+    'isVerified': isVerified,
+    'category': category,
+    'location': location,
+    'urgencyBadge': urgencyBadge,
+    'urgencyBadgeColor': urgencyBadgeColor,
+    'daysLeft': daysLeft,
+    'progressPercent': progressPercent,
+    'currentProgressLabel': currentProgressLabel,
+    'targetProgressLabel': targetProgressLabel,
+    'supportersCount': supportersCount,
+    'imageUrls': imageUrls,
+    'needItems': needItems.map((i) => i.toMap()).toList(),
+    'pixKey': pixKey,
+    'volunteersNeeded': volunteersNeeded,
+    'volunteerDateInfo': volunteerDateInfo,
+    'createdAt': DateTime.now().toIso8601String(),
+  };
+
+  factory Campaign.fromMap(String id, Map<String, dynamic> map) => Campaign(
+    id: id,
+    title: map['title'] as String? ?? '',
+    subtitle: map['subtitle'] as String? ?? '',
+    description: map['description'] as String? ?? '',
+    highlightText: map['highlightText'] as String? ?? '',
+    organizationName: map['organizationName'] as String? ?? '',
+    organizationYears: map['organizationYears'] as String? ?? '',
+    isVerified: map['isVerified'] as bool? ?? true,
+    category: map['category'] as String? ?? 'Alimentos',
+    location: map['location'] as String? ?? '',
+    urgencyBadge: map['urgencyBadge'] as String?,
+    urgencyBadgeColor: map['urgencyBadgeColor'] as String?,
+    daysLeft: (map['daysLeft'] as num?)?.toInt() ?? 0,
+    progressPercent: (map['progressPercent'] as num?)?.toDouble() ?? 0,
+    currentProgressLabel: map['currentProgressLabel'] as String? ?? '',
+    targetProgressLabel: map['targetProgressLabel'] as String? ?? '',
+    supportersCount: (map['supportersCount'] as num?)?.toInt() ?? 0,
+    imageUrls:
+        (map['imageUrls'] as List?)?.map((e) => e.toString()).toList() ??
+        const [],
+    needItems:
+        (map['needItems'] as List?)
+            ?.map(
+              (e) => DonationItem.fromMap(Map<String, dynamic>.from(e as Map)),
+            )
+            .toList() ??
+        const [],
+    pixKey: map['pixKey'] as String?,
+    volunteersNeeded: (map['volunteersNeeded'] as num?)?.toInt(),
+    volunteerDateInfo: map['volunteerDateInfo'] as String?,
+  );
 }
 
 class DonationRecord {
@@ -77,6 +154,7 @@ class DonationRecord {
   final String? address;
   final String status; // 'Confirmado', 'Agendado', 'Entregue'
   final String receiptCode;
+  final String? userId;
 
   DonationRecord({
     required this.id,
@@ -89,7 +167,40 @@ class DonationRecord {
     this.address,
     required this.status,
     required this.receiptCode,
+    this.userId,
   });
+
+  Map<String, dynamic> toMap() => {
+    'campaignId': campaignId,
+    'campaignTitle': campaignTitle,
+    'date': date.toIso8601String(),
+    'itemsWithQty': itemsWithQty,
+    'totalCount': totalCount,
+    'deliveryMethod': deliveryMethod,
+    'address': address,
+    'status': status,
+    'receiptCode': receiptCode,
+    'userId': userId,
+  };
+
+  factory DonationRecord.fromMap(String id, Map<String, dynamic> map) {
+    final items = (map['itemsWithQty'] as Map?) ?? const {};
+    return DonationRecord(
+      id: id,
+      campaignId: map['campaignId'] as String? ?? '',
+      campaignTitle: map['campaignTitle'] as String? ?? '',
+      date: DateTime.tryParse(map['date'] as String? ?? '') ?? DateTime.now(),
+      itemsWithQty: Map<String, int>.from(
+        items.map((k, v) => MapEntry(k.toString(), (v as num).toInt())),
+      ),
+      totalCount: (map['totalCount'] as num?)?.toInt() ?? 0,
+      deliveryMethod: map['deliveryMethod'] as String? ?? 'Ponto de Coleta',
+      address: map['address'] as String?,
+      status: map['status'] as String? ?? 'Confirmado',
+      receiptCode: map['receiptCode'] as String? ?? '',
+      userId: map['userId'] as String?,
+    );
+  }
 }
 
 class UserProfile {
@@ -103,10 +214,10 @@ class UserProfile {
   UserProfile({
     required this.name,
     required this.email,
-    required this.avatarUrl,
-    required this.city,
-    required this.donationsCount,
-    required this.totalItemsDonated,
+    this.avatarUrl = '',
+    this.city = '',
+    this.donationsCount = 0,
+    this.totalItemsDonated = 0,
   });
 
   UserProfile copyWith({
@@ -127,4 +238,3 @@ class UserProfile {
     );
   }
 }
-
