@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>Comunidade em Ação - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            fluent: {
+              bg: "#F3F3F3",
+              subtle: "#F9F9F9",
+              card: "#FFFFFF",
+              border: "#E5E5E5",
+              hover: "rgba(0, 0, 0, 0.04)",
+              pressed: "rgba(0, 0, 0, 0.06)",
+              primary: "#107C41",
+              primaryHover: "#0E6B38",
+              primaryLight: "#E8F5E9",
+              text: "#1F1F1F",
+              muted: "#5D5D5D",
+              tertiary: "#8A8A8A"
+            }
+          },
+          fontFamily: {
+            sans: ["'Segoe UI'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #F3F3F3;
+      color: #1F1F1F;
+      font-family: 'Segoe UI', 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1D1D1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #A0A0A0;
+    }
+  </style>
+</head>
+<body class="bg-[#F3F3F3] text-fluent-text antialiased selection:bg-[#107C41] selection:text-white">
+<!-- Windows 11 Fluent Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#F9F9F9] border-r border-[#E5E5E5] z-50 flex flex-col justify-between p-3 select-none">
+<div class="flex flex-col gap-4">
+<!-- App Brand Header -->
+<div class="flex items-center gap-2.5 px-3 py-2">
+<div class="w-8 h-8 rounded-md bg-[#107C41] flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-[#1F1F1F] leading-tight">Comunidade</span>
+<span class="text-[11px] font-medium text-[#107C41] uppercase tracking-wider">em Ação</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-0.5">
+<!-- Active Nav Item with Windows 11 accent pill -->
+<a class="relative flex items-center gap-3 px-3 py-2 rounded-md bg-white border border-[#E5E5E5]/70 text-[#107C41] text-[13px] font-semibold shadow-xs" data-path="inicio-feed" href="#">
+<span class="absolute left-0 top-2 bottom-2 w-1 bg-[#107C41] rounded-r"></span>
+<span class="material-symbols-outlined text-[19px] text-[#107C41]">feed</span>
+<span>Início / Feed</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-[#4A4A4A] text-[13px] font-medium hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="explorar-campanhas" href="#">
+<span class="material-symbols-outlined text-[19px] text-[#5D5D5D]">explore</span>
+<span>Explorar Campanhas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-[#4A4A4A] text-[13px] font-medium hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="minhas-doacoes" href="#">
+<span class="material-symbols-outlined text-[19px] text-[#5D5D5D]">favorite</span>
+<span>Minhas Doações</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-[#4A4A4A] text-[13px] font-medium hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="criar-campanha" href="#">
+<span class="material-symbols-outlined text-[19px] text-[#5D5D5D]">add_circle</span>
+<span>Criar Campanha</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-[#4A4A4A] text-[13px] font-medium hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="impacto-transparencia" href="#">
+<span class="material-symbols-outlined text-[19px] text-[#5D5D5D]">query_stats</span>
+<span>Impacto &amp; Transparência</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-[#4A4A4A] text-[13px] font-medium hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="configuracoes" href="#">
+<span class="material-symbols-outlined text-[19px] text-[#5D5D5D]">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Footer -->
+<div class="pt-2 border-t border-[#E5E5E5]">
+<div class="flex items-center justify-between p-2 rounded-md bg-white border border-[#E5E5E5] shadow-xs">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-[#E8F5E9] border border-[#C8E6C9] flex items-center justify-center text-[#107C41]">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-[13px] font-semibold text-[#1F1F1F] truncate leading-tight">Ana Paula</span>
+<span class="text-[11px] text-[#6E6E6E] flex items-center gap-1 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-[#107C41]"></span>São Paulo, SP
+            </span>
+</div>
+</div>
+<a class="w-7 h-7 rounded flex items-center justify-center text-[#6E6E6E] hover:bg-black/5 hover:text-[#1F1F1F] transition-colors" data-path="login" href="#" title="Sair">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="pl-64 flex flex-col min-h-screen">
+<!-- Top Bar (Windows 11 Toolbar) -->
+<header class="sticky top-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] px-6 flex items-center justify-between">
+<div class="flex items-center gap-3 flex-1 max-w-xl">
+<!-- Search Input -->
+<div class="flex items-center gap-2 bg-[#F3F3F3] hover:bg-[#EBEBEB] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#107C41]/30 focus-within:border-[#107C41] border border-[#E5E5E5] px-3 py-1.5 rounded-md w-full transition-all">
+<span class="material-symbols-outlined text-[#707070] text-[18px]">search</span>
+<input class="bg-transparent text-[13px] text-[#1F1F1F] placeholder-[#707070] focus:outline-none w-full" placeholder="Buscar campanhas, causas ou vizinhos..." type="text"/>
+<span class="text-[11px] text-[#707070] bg-white border border-[#E0E0E0] px-1.5 py-0.5 rounded shadow-2xs font-mono">Ctrl+K</span>
+</div>
+<!-- Location indicator -->
+<div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-[#F9F9F9] border border-[#E5E5E5] rounded-md text-[12px] font-medium text-[#4A4A4A] shrink-0">
+<span class="material-symbols-outlined text-[#107C41] text-[16px]">location_on</span>
+<span>São Paulo, SP</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-2.5">
+<a class="flex items-center gap-1.5 bg-[#107C41] hover:bg-[#0E6B38] text-white text-[13px] font-semibold px-3.5 py-1.5 rounded-md shadow-xs transition-colors" data-path="criar-campanha" href="#">
+<span class="material-symbols-outlined text-[17px]">add</span>
+<span>Nova Campanha</span>
+</a>
+<button class="relative w-8 h-8 rounded-md border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] flex items-center justify-center text-[#5D5D5D] hover:text-[#1F1F1F] transition-colors" title="Notificações">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#D83B01] rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-md bg-[#F3F3F3] border border-[#E5E5E5] flex items-center justify-center text-[#4A4A4A]">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 px-6 py-5 flex flex-col gap-5">
+<!-- Header Banner / Stats Overview -->
+<section class="bg-white border border-[#E5E5E5] rounded-md p-5 shadow-2xs flex flex-col xl:flex-row xl:items-center justify-between gap-5">
+<div class="flex flex-col gap-1.5 max-w-xl">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-[#E5E5E5] bg-[#F9F9F9] w-fit text-[#5D5D5D] text-[11px] font-semibold tracking-wide">
+<span class="w-2 h-2 rounded-full bg-[#107C41]"></span>
+<span>ZONA SUL E REGIÃO METROPOLITANA</span>
+</div>
+<h1 class="text-[20px] font-bold text-[#1F1F1F] tracking-tight">
+            Olá, Ana Paula! <span class="text-[#107C41]">14 iniciativas</span> precisam de apoio perto de você.
+          </h1>
+<p class="text-[13px] text-[#5D5D5D] leading-relaxed">
+            Veja as campanhas ativas esta semana e ajude a transformar realidades locais através de doações via Pix transparente ou voluntariado presencial.
+          </p>
+</div>
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<div class="flex items-center gap-3 bg-[#F9F9F9] border border-[#E5E5E5] p-3 rounded-md min-w-[170px]">
+<div class="w-10 h-10 rounded-md bg-white border border-[#E5E5E5] text-[#107C41] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-[#707070] font-medium uppercase">Arrecadado no mês</span>
+<span class="text-[16px] font-bold text-[#1F1F1F]">R$ 38.450</span>
+<span class="text-[11px] text-[#107C41] font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">trending_up</span> +14% que out
+              </span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-[#F9F9F9] border border-[#E5E5E5] p-3 rounded-md min-w-[170px]">
+<div class="w-10 h-10 rounded-md bg-white border border-[#E5E5E5] text-[#107C41] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">lunch_dining</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-[#707070] font-medium uppercase">Cestas distribuídas</span>
+<span class="text-[16px] font-bold text-[#1F1F1F]">1.240 un</span>
+<span class="text-[11px] text-[#707070]">Meta mensal: 1.500</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-[#F9F9F9] border border-[#E5E5E5] p-3 rounded-md min-w-[170px]">
+<div class="w-10 h-10 rounded-md bg-white border border-[#E5E5E5] text-[#107C41] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-[#707070] font-medium uppercase">Voluntários em ação</span>
+<span class="text-[16px] font-bold text-[#1F1F1F]">84 ativos</span>
+<span class="text-[11px] text-[#107C41] font-semibold">12 novos hoje</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Filter Controls Toolbar -->
+<section class="bg-white border border-[#E5E5E5] rounded-md p-2.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+<!-- Category Buttons -->
+<div class="flex items-center gap-1.5 overflow-x-auto py-0.5 flex-1 min-w-0">
+<button class="px-3 py-1.5 rounded-md text-[12px] font-semibold bg-[#107C41] text-white flex items-center gap-1.5 shrink-0 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[15px]">grid_view</span>
+<span>Todas as Causas</span>
+</button>
+<button class="px-3 py-1.5 rounded-md text-[12px] font-medium bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#4A4A4A] hover:text-[#1F1F1F] border border-[#E5E5E5] shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">soup_kitchen</span>
+<span>Alimentos &amp; Cestas</span>
+</button>
+<button class="px-3 py-1.5 rounded-md text-[12px] font-medium bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#4A4A4A] hover:text-[#1F1F1F] border border-[#E5E5E5] shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">dry_cleaning</span>
+<span>Roupas &amp; Inverno</span>
+</button>
+<button class="px-3 py-1.5 rounded-md text-[12px] font-medium bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#4A4A4A] hover:text-[#1F1F1F] border border-[#E5E5E5] shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">school</span>
+<span>Educação</span>
+</button>
+<button class="px-3 py-1.5 rounded-md text-[12px] font-medium bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#4A4A4A] hover:text-[#1F1F1F] border border-[#E5E5E5] shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">handyman</span>
+<span>Reformas Comunitárias</span>
+</button>
+<button class="px-3 py-1.5 rounded-md text-[12px] font-medium bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#4A4A4A] hover:text-[#1F1F1F] border border-[#E5E5E5] shrink-0 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">medical_services</span>
+<span>Saúde</span>
+</button>
+</div>
+<!-- Toggles: Urgência & Raio -->
+<div class="flex items-center gap-2 shrink-0">
+<div class="flex items-center bg-[#F9F9F9] border border-[#E5E5E5] p-0.5 rounded-md text-[12px]">
+<span class="px-2 text-[#707070] font-medium text-[11px]">Urgência:</span>
+<button class="px-2.5 py-1 rounded bg-[#FDE7E9] text-[#A80000] border border-[#F1A2A8] font-semibold flex items-center gap-1 text-[11px]">
+<span class="material-symbols-outlined text-[13px]">priority_high</span> Alta
+            </button>
+<button class="px-2.5 py-1 rounded text-[#5D5D5D] hover:text-[#1F1F1F] text-[11px] font-medium">
+              Média
+            </button>
+</div>
+<div class="flex items-center bg-[#F9F9F9] border border-[#E5E5E5] p-0.5 rounded-md text-[12px]">
+<span class="material-symbols-outlined text-[#107C41] text-[15px] ml-1.5 mr-0.5">radar</span>
+<button class="px-2.5 py-1 rounded bg-white text-[#1F1F1F] border border-[#E0E0E0] text-[11px] font-semibold shadow-2xs">Até 5km</button>
+<button class="px-2 py-1 text-[#5D5D5D] hover:text-[#1F1F1F] text-[11px]">10km</button>
+<button class="px-2 py-1 text-[#5D5D5D] hover:text-[#1F1F1F] text-[11px]">20km</button>
+</div>
+</div>
+</section>
+<!-- 2-Column Content Layout (Cards + Sidebar) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+<!-- Primary Feed: 8 Columns -->
+<div class="xl:col-span-8 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="text-[16px] font-bold text-[#1F1F1F]">Campanhas em Andamento</h2>
+<span class="px-2 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#107C41] text-[11px] font-semibold">4 com maior prioridade</span>
+</div>
+<div class="flex items-center gap-1.5 text-[#5D5D5D] text-[12px]">
+<span>Ordenar por:</span>
+<button class="text-[#107C41] font-semibold flex items-center hover:underline">
+                Urgência &amp; Meta
+                <span class="material-symbols-outlined text-[15px]">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Campaign Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card 1 -->
+<article class="bg-white border border-[#E5E5E5] rounded-md overflow-hidden hover:border-[#CCCCCC] transition-all flex flex-col justify-between shadow-2xs">
+<div>
+<div class="relative w-full h-44 bg-[#F0F0F0] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Brazilian volunteer sorting warm winter coats and knit beanies in a community center warehouse, warm sunlight streaming through window, hopeful and clean documentary photography style, natural green and warm accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrvlnAKyFr5J2X3nLBoZPlHI4z_w6DLnTd5QK5_MDOME--y9X7X8oOpDUel-yL6E4cGjyh7Hjbjl3mAVSL-3n23oWT4bQqX0PXgcNNQCPiaSguyG06omeP6yYy49CQWITTSjE1Jdc-YrmistR548IqttMLueFkl8vK1ACa6y0WGWYlVDNEkGltIFpkmh7sSSLR1xdgRI8jo_xY_5a77ZVnkWSW1sLuaQQvynCXka0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#D83B01] text-white text-[11px] font-semibold flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]">warning</span> Urgente
+                    </span>
+<span class="px-2 py-0.5 rounded bg-black/60 text-white text-[11px] font-medium backdrop-blur-xs">
+                      Faltam 6 dias
+                    </span>
+</div>
+<div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">place</span> Mooca e Brás, SP
+                    </span>
+<span class="font-medium text-white/90">Inverno Solidário</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-[#107C41] font-semibold uppercase tracking-wide">Ação Humanitária</span>
+<span class="text-[#707070] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">group</span> 140 apoiadores
+                      </span>
+</div>
+<h3 class="text-[15px] font-bold text-[#1F1F1F] leading-snug">
+                      Campanha do Agasalho 2025
+                    </h3>
+<p class="text-[12px] text-[#5D5D5D] leading-normal line-clamp-2">
+                      Proteja famílias em situação de vulnerabilidade extrema durante as frentes frias de maio. Cada cota de R$ 45 garante um kit completo com cobertor térmico.
+                    </p>
+</div>
+<!-- Progress -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-baseline justify-between text-[12px]">
+<span class="font-semibold text-[#1F1F1F]">R$ 18.200 <span class="text-[11px] text-[#707070] font-normal">de R$ 22.000</span></span>
+<span class="font-bold text-[#107C41]">82%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden">
+<div class="h-full bg-[#107C41]" style="width: 82%;"></div>
+</div>
+<span class="text-[11px] text-[#707070]">Faltam apenas R$ 3.800 para atingir a meta total</span>
+</div>
+</div>
+</div>
+<!-- Buttons -->
+<div class="p-4 pt-0 flex items-center gap-2">
+<button class="flex-1 h-9 rounded-md bg-[#107C41] hover:bg-[#0E6B38] text-white text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+<span>Apoiar Agora</span>
+</button>
+<button class="w-9 h-9 rounded-md border border-[#E5E5E5] hover:bg-[#F9F9F9] text-[#5D5D5D] flex items-center justify-center transition-colors" title="Compartilhar">
+<span class="material-symbols-outlined text-[17px]">share</span>
+</button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-white border border-[#E5E5E5] rounded-md overflow-hidden hover:border-[#CCCCCC] transition-all flex flex-col justify-between shadow-2xs">
+<div>
+<div class="relative w-full h-44 bg-[#F0F0F0] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Lush green organic community vegetable garden in Heliopolis community Sao Paulo, smiling female farmer harvesting fresh lettuces, warm natural sunlight, crisp green tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2eAk7hQA23VGkIQAzsBFCWoP3e1VQL64du6ttbu3yVJ8D8EMScjFlXPxkRBcn3ryXobiCI17YSemsBRylVMxxrTkICWve5E5xMxDSxcVZPXO6l-7473ddtlMjUVIFWtwj3BVTUZS_Nb4GiLHoFG1asYcRY1YIBsC1MFoODI0Coap0mzdxGZDesc-Qp2xoI7lyLfZxkKh4x8Iv8CSuD0fObRHeKHpIFVNHWKVDy7A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#107C41] text-white text-[11px] font-semibold flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]">eco</span> Agroecologia
+                    </span>
+</div>
+<div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Heliópolis, SP
+                    </span>
+<span class="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-medium">A 3.8 km</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-[#107C41] font-semibold uppercase tracking-wide">Segurança Alimentar</span>
+<span class="text-[#707070] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">nutrition</span> 390 / 500 cestas
+                      </span>
+</div>
+<h3 class="text-[15px] font-bold text-[#1F1F1F] leading-snug">
+                      Horta Comunitária Heliópolis
+                    </h3>
+<p class="text-[12px] text-[#5D5D5D] leading-normal line-clamp-2">
+                      Fornecimento semanal de hortaliças sem agrotóxicos para cozinhas comunitárias locais e mães solo da comunidade.
+                    </p>
+</div>
+<!-- Progress -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-baseline justify-between text-[12px]">
+<span class="font-semibold text-[#1F1F1F]">390 cestas <span class="text-[11px] text-[#707070] font-normal">entregues</span></span>
+<span class="font-bold text-[#107C41]">78%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden">
+<div class="h-full bg-[#107C41]" style="width: 78%;"></div>
+</div>
+<span class="text-[11px] text-[#707070]">Próxima colheita e distribuição: Sexta-feira</span>
+</div>
+</div>
+</div>
+<!-- Buttons -->
+<div class="p-4 pt-0 grid grid-cols-2 gap-2">
+<button class="h-9 rounded-md bg-[#107C41] hover:bg-[#0E6B38] text-white text-[12px] font-semibold flex items-center justify-center gap-1 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[16px]">shopping_basket</span>
+<span>Doar Cesta</span>
+</button>
+<button class="h-9 rounded-md border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] text-[#1F1F1F] text-[12px] font-medium flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-[#5D5D5D]">volunteer_activism</span>
+<span>Ser Voluntário</span>
+</button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-white border border-[#E5E5E5] rounded-md overflow-hidden hover:border-[#CCCCCC] transition-all flex flex-col justify-between shadow-2xs">
+<div>
+<div class="relative w-full h-44 bg-[#F0F0F0] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Volunteers painting walls and assembling safe wooden playground benches in a small colorful child daycare in a Brazilian suburb, high resolution, daylight, collaborative community energy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIfoN5DDjRtzf84W4sgECkETOCV7TC1a4HtPh_8ViWSEyiShsFheEWhVH3VMJ4_nb-cU1YEyZxYgipVuJRQXUCkMqfmZ9GfdgSjGBVdZ251IGZBtP0T0LTJ2TJl2nWZDnmLgak_mTUsodizyf_prAlBQCyWKcve23p8f2WaoKLLkDp4db5v5is3bmFHmYEkooDJDI7eaLZU5UBL6hYx5ONRInbs4smG7QGDE1zars"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#005FB8] text-white text-[11px] font-semibold flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]">event</span> Mutirão neste Sábado
+                    </span>
+</div>
+<div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">place</span> Capão Redondo, SP
+                    </span>
+<span class="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-medium">6 vagas restantes</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-[#005FB8] font-semibold uppercase tracking-wide">Infraestrutura Social</span>
+<span class="text-[#707070] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span> 08:00 às 15:00
+                      </span>
+</div>
+<h3 class="text-[15px] font-bold text-[#1F1F1F] leading-snug">
+                      Reforma da Creche Esperança
+                    </h3>
+<p class="text-[12px] text-[#5D5D5D] leading-normal line-clamp-2">
+                      Troca do telhado com infiltração, pintura das salas de aula e instalação de piso vinílico para acolher 60 crianças.
+                    </p>
+</div>
+<!-- Progress -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-baseline justify-between text-[12px]">
+<span class="font-semibold text-[#1F1F1F]">R$ 5.400 <span class="text-[11px] text-[#707070] font-normal">de R$ 12.000</span></span>
+<span class="font-bold text-[#005FB8]">45%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden">
+<div class="h-full bg-[#005FB8]" style="width: 45%;"></div>
+</div>
+<span class="text-[11px] text-[#707070]">Materiais já comprados: tinta e impermeabilizante</span>
+</div>
+</div>
+</div>
+<!-- Buttons -->
+<div class="p-4 pt-0 flex items-center gap-2">
+<button class="flex-1 h-9 rounded-md bg-[#107C41] hover:bg-[#0E6B38] text-white text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[16px]">handyman</span>
+<span>Inscrever no Mutirão</span>
+</button>
+<button class="px-3 h-9 rounded-md border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] text-[#1F1F1F] text-[12px] font-medium transition-colors">
+                  Contribuir R$
+                </button>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-white border border-[#E5E5E5] rounded-md overflow-hidden hover:border-[#CCCCCC] transition-all flex flex-col justify-between shadow-2xs">
+<div>
+<div class="relative w-full h-44 bg-[#F0F0F0] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="School supplies backpacks pencils notebooks carefully assembled in colorful packages on community desk, Brazilian urban neighborhood, warm daylight, crisp focused detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB96FxxON2EYOgyFXy45Rj_Yowcx5CbRB_P6LnnpMU-IwmRSDPfRpAHojDtiaENtKh47nz4hGg0Q-QuJmEmJxk725GfK48N_3GhrDhHuxP6xqIqEq3qzXExfJp_exDkcMQRONzaACIxWm0mz5zgwbELJuVe3LM8d2bnhZIaYdcEApzOb8X7YsrcTv-mVltZY1isdu1RZHAq5lVg9bMjy5x7r9otgQSEw4Lq1-bWiGw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#107C41] text-white text-[11px] font-semibold flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]">school</span> Quase Concluído
+                    </span>
+</div>
+<div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">backpack</span> 184 / 200 kits
+                    </span>
+<span class="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-semibold text-emerald-300">Faltam só 16!</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-[#107C41] font-semibold uppercase tracking-wide">Educação Básica</span>
+<span class="text-[#707070] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">favorite</span> 98 doadores
+                      </span>
+</div>
+<h3 class="text-[15px] font-bold text-[#1F1F1F] leading-snug">
+                      Kits Escolares para o Complexo do Alemão
+                    </h3>
+<p class="text-[12px] text-[#5D5D5D] leading-normal line-clamp-2">
+                      Mochilas reforçadas, cadernos pedagógicos, réguas e estojos para garantir a permanência de estudantes do 1º ao 5º ano no retorno às aulas.
+                    </p>
+</div>
+<!-- Progress -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-baseline justify-between text-[12px]">
+<span class="font-semibold text-[#1F1F1F]">184 kits <span class="text-[11px] text-[#707070] font-normal">garantidos de 200</span></span>
+<span class="font-bold text-[#107C41]">92%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden">
+<div class="h-full bg-[#107C41]" style="width: 92%;"></div>
+</div>
+<span class="text-[11px] text-[#707070]">Valor por kit individual: R$ 68,00</span>
+</div>
+</div>
+</div>
+<!-- Buttons -->
+<div class="p-4 pt-0 flex items-center gap-2">
+<button class="flex-1 h-9 rounded-md bg-[#107C41] hover:bg-[#0E6B38] text-white text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[16px]">done_all</span>
+<span>Completar Meta (R$ 68)</span>
+</button>
+<button class="w-9 h-9 rounded-md border border-[#E5E5E5] hover:bg-[#F9F9F9] text-[#5D5D5D] flex items-center justify-center transition-colors" title="Ver detalhes">
+<span class="material-symbols-outlined text-[17px]">visibility</span>
+</button>
+</div>
+</article>
+</div>
+<!-- Trust Callout -->
+<div class="flex items-center justify-between p-3.5 bg-white border border-[#E5E5E5] rounded-md shadow-2xs">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-md bg-[#E8F5E9] text-[#107C41] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[13px] font-semibold text-[#1F1F1F]">Auditoria e Pix Direto de Ponta a Ponta</span>
+<span class="text-[12px] text-[#5D5D5D]">100% dos recursos são repassados aos comitês com nota fiscal e fotos em até 48 horas.</span>
+</div>
+</div>
+<a class="text-[12px] text-[#107C41] font-semibold hover:underline shrink-0" data-path="impacto-transparencia" href="#">
+              Ver Relatório de Contas →
+            </a>
+</div>
+</div>
+<!-- Sidebar Widgets: 4 Columns -->
+<aside class="xl:col-span-4 flex flex-col gap-4">
+<!-- Widget: Ponto de Coleta Mais Próximo -->
+<div class="bg-white border border-[#E5E5E5] rounded-md p-4 flex flex-col gap-3 shadow-2xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-[#E8F5E9] text-[#107C41] flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+</div>
+<div>
+<h3 class="text-[14px] font-bold text-[#1F1F1F] leading-tight">Ponto Mais Próximo</h3>
+<p class="text-[11px] text-[#707070]">A 1.2 km de você</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded border border-[#C8E6C9] bg-[#E8F5E9] text-[#107C41] text-[11px] font-semibold">
+                Aberto agora
+              </span>
+</div>
+<!-- Mini Map Preview -->
+<div class="relative w-full h-36 rounded-md overflow-hidden border border-[#E5E5E5] bg-[#EAEAEA]">
+<div class="w-full h-full bg-cover bg-center" data-location="Vila Mariana, São Paulo, Brasil" style="background-image: radial-gradient(#d1d1d1 1px, transparent 1px), radial-gradient(#d1d1d1 1px, #f3f3f3 1px); background-size: 20px 20px;">
+<div class="w-full h-full flex items-center justify-center text-[#707070]">
+<div class="p-2 rounded-full bg-white/90 border border-[#E5E5E5] shadow-xs">
+<span class="material-symbols-outlined text-[#107C41] text-[24px]">location_pin</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 right-2 bg-white/95 backdrop-blur-md border border-[#E5E5E5] p-2 rounded-md flex items-center justify-between">
+<div class="flex flex-col min-w-0">
+<span class="text-[11px] text-[#1F1F1F] font-bold truncate">Galpão Solidário Vila Mariana</span>
+<span class="text-[10px] text-[#707070] truncate">R. Domingos de Morais, 1840 • Fecha às 18h</span>
+</div>
+<a class="w-6 h-6 rounded bg-[#107C41] text-white flex items-center justify-center shrink-0 ml-2" href="https://maps.google.com" target="_blank" title="Abrir no GPS">
+<span class="material-symbols-outlined text-[13px]">directions</span>
+</a>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex flex-col gap-1.5">
+<span class="text-[11px] text-[#707070] font-semibold uppercase tracking-wider">Itens aceitos hoje neste ponto:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 rounded bg-[#F9F9F9] border border-[#E5E5E5] text-[#333333] text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-[#107C41]">check_circle</span> Alimentos não perecíveis
+                </span>
+<span class="px-2 py-1 rounded bg-[#F9F9F9] border border-[#E5E5E5] text-[#333333] text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-[#107C41]">check_circle</span> Agasalhos &amp; Cobertores
+                </span>
+<span class="px-2 py-1 rounded bg-[#F9F9F9] border border-[#E5E5E5] text-[#333333] text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-[#107C41]">check_circle</span> Produtos de higiene
+                </span>
+</div>
+</div>
+<button class="w-full h-8 rounded-md border border-[#E5E5E5] bg-[#F9F9F9] hover:bg-[#F0F0F0] text-[#1F1F1F] text-[12px] font-medium transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-[#5D5D5D]">pin_drop</span>
+<span>Ver todos os 8 pontos de São Paulo</span>
+</button>
+</div>
+<!-- Widget: Rede em Ação (Live Feed) -->
+<div class="bg-white border border-[#E5E5E5] rounded-md p-4 flex flex-col gap-3 shadow-2xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-[#F9F9F9] border border-[#E5E5E5] text-[#107C41] flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+</div>
+<div>
+<h3 class="text-[14px] font-bold text-[#1F1F1F] leading-tight">Rede em Ação</h3>
+<p class="text-[11px] text-[#707070]">Atividade em tempo real</p>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-[#107C41]"></span>
+</div>
+<!-- Feed List -->
+<div class="flex flex-col gap-2" id="community-live-feed">
+<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-[#F9F9F9] transition-colors">
+<div class="w-7 h-7 rounded-md bg-[#E8F5E9] text-[#107C41] text-[11px] font-bold flex items-center justify-center shrink-0">
+                  MR
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-[12px] text-[#1F1F1F] leading-snug">
+<strong class="font-semibold text-[#1F1F1F]">Marcos Ramos</strong> doou <span class="text-[#107C41] font-semibold">R$ 90,00 (2 cotas)</span> para <span class="font-medium text-[#1F1F1F]">Campanha do Agasalho</span>
+</p>
+<span class="text-[10px] text-[#707070] mt-0.5">Há 4 minutos • Mooca</span>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-[#F9F9F9] transition-colors">
+<div class="w-7 h-7 rounded-md bg-[#EFF6FC] text-[#005FB8] text-[11px] font-bold flex items-center justify-center shrink-0">
+                  CL
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-[12px] text-[#1F1F1F] leading-snug">
+<strong class="font-semibold text-[#1F1F1F]">Camila Lima</strong> se inscreveu como <span class="text-[#005FB8] font-semibold">voluntária no mutirão</span> da <span class="font-medium text-[#1F1F1F]">Creche Esperança</span>
+</p>
+<span class="text-[10px] text-[#707070] mt-0.5">Há 19 minutos • Capão Redondo</span>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-[#F9F9F9] transition-colors">
+<div class="w-7 h-7 rounded-md bg-[#F3F3F3] text-[#5D5D5D] text-[11px] font-bold flex items-center justify-center shrink-0">
+                  RS
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-[12px] text-[#1F1F1F] leading-snug">
+<strong class="font-semibold text-[#1F1F1F]">Rodrigo Silveira</strong> financiou <span class="text-[#107C41] font-semibold">1 Kit Escolar completo</span>
+</p>
+<span class="text-[10px] text-[#707070] mt-0.5">Há 35 minutos • Vila Mariana</span>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-[#F9F9F9] transition-colors">
+<div class="w-7 h-7 rounded-md bg-[#E8F5E9] text-[#107C41] text-[11px] font-bold flex items-center justify-center shrink-0">
+                  GT
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-[12px] text-[#1F1F1F] leading-snug">
+<strong class="font-semibold text-[#1F1F1F]">Grêmio Torcida Solidária</strong> contribuiu com <span class="text-[#107C41] font-semibold">R$ 1.500,00</span>
+</p>
+<span class="text-[10px] text-[#707070] mt-0.5">Há 1 hora • São Paulo</span>
+</div>
+</div>
+</div>
+<div class="pt-1">
+<div class="p-2.5 rounded-md bg-[#F9F9F9] border border-[#E5E5E5] flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#107C41] text-[17px]">handshake</span>
+<span class="text-[11px] font-medium text-[#1F1F1F]">Faça parte desta corrente hoje</span>
+</div>
+<a class="text-[11px] text-[#107C41] font-semibold hover:underline" data-path="explorar-campanhas" href="#">
+                  Ver mais →
+                </a>
+</div>
+</div>
+</div>
+<!-- Alert / Newsletter Widget -->
+<div class="bg-white border border-[#E5E5E5] rounded-md p-4 flex flex-col gap-2.5 shadow-2xs">
+<div class="flex items-center gap-1.5 text-[#107C41]">
+<span class="material-symbols-outlined text-[18px]">campaign</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Boletim Local</span>
+</div>
+<h4 class="text-[13px] font-bold text-[#1F1F1F] leading-snug">
+              Quer ser avisado de emergências climáticas no seu bairro?
+            </h4>
+<p class="text-[12px] text-[#5D5D5D] leading-normal">
+              Receba alertas no WhatsApp para doação emergencial de colchões, lonas e água potável.
+            </p>
+<button class="mt-1 h-8 rounded-md bg-[#107C41] hover:bg-[#0E6B38] text-white text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+<span>Ativar Alertas no WhatsApp</span>
+</button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<script>
+    // Micro-interaction for buttons
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.add('opacity-90');
+        setTimeout(() => this.classList.remove('opacity-90'), 100);
+      });
+    });
+  </script>
+</body></html>

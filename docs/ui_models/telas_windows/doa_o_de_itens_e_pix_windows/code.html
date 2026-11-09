@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>Doação para Horta Solidária Heliópolis - Comunidade em Ação</title>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            win: {
+              bg: "#F3F3F3",
+              card: "#FFFFFF",
+              border: "#E5E5E5",
+              hover: "#F9F9F9",
+              subtle: "#F5F5F5",
+              secondary: "#5C5C5C",
+              text: "#1F1F1F",
+              accent: "#0067B8",
+              "accent-hover": "#005DA6",
+              green: "#0E703C",
+              "green-hover": "#0A5A30",
+              "green-light": "#E9F5ED"
+            }
+          },
+          fontFamily: {
+            fluent: ['"Segoe UI"', '"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            fluent: "0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)",
+            "fluent-card": "0 2px 4px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.08)",
+            "fluent-elevation": "0 8px 16px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)",
+          },
+          borderRadius: {
+            win: "6px",
+            winLg: "8px",
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      background-color: #F3F3F3;
+      color: #1F1F1F;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+  </style>
+</head>
+<body class="bg-[#F3F3F3] text-[#1F1F1F] min-h-screen antialiased flex flex-col">
+<div class="flex flex-1">
+<!-- Fluent Side Navigation -->
+<aside class="w-64 bg-[#F8F9FA] border-r border-[#E5E5E5] flex flex-col justify-between p-3 shrink-0 z-40">
+<div class="flex flex-col gap-4">
+<!-- Brand / Header -->
+<div class="flex items-center gap-3 px-2 py-2.5">
+<div class="w-8 h-8 rounded-[6px] bg-[#0E703C] flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[19px]">volunteer_activism</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[14px] font-semibold text-[#1F1F1F] leading-tight">Comunidade</span>
+<span class="text-[10px] font-semibold text-[#0E703C] tracking-wide uppercase">em Ação</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-0.5" id="navFluent">
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium text-[#404040] hover:bg-[#EBEBEB] hover:text-[#1F1F1F] transition-colors" data-path="inicio-feed" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#5C5C5C]">feed</span>
+<span>Início / Feed</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium bg-[#EAEAEA] text-[#1F1F1F] shadow-xs" data-path="explorar-campanhas" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#0E703C]">explore</span>
+<span class="font-semibold">Explorar Campanhas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium text-[#404040] hover:bg-[#EBEBEB] hover:text-[#1F1F1F] transition-colors" data-path="minhas-doacoes" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#5C5C5C]">favorite</span>
+<span>Minhas Doações</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium text-[#404040] hover:bg-[#EBEBEB] hover:text-[#1F1F1F] transition-colors" data-path="criar-campanha" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#5C5C5C]">add_circle</span>
+<span>Criar Campanha</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium text-[#404040] hover:bg-[#EBEBEB] hover:text-[#1F1F1F] transition-colors" data-path="impacto-transparencia" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#5C5C5C]">query_stats</span>
+<span>Impacto &amp; Transparência</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium text-[#404040] hover:bg-[#EBEBEB] hover:text-[#1F1F1F] transition-colors" data-path="configuracoes" href="#">
+<span class="material-symbols-outlined text-[18px] text-[#5C5C5C]">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Box -->
+<div class="pt-2 border-t border-[#E5E5E5]">
+<div class="flex items-center justify-between p-2 rounded-[6px] bg-white border border-[#E5E5E5]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-7 h-7 rounded-[4px] bg-[#E9F5ED] text-[#0E703C] flex items-center justify-center text-[13px] font-semibold shrink-0">
+              AP
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="text-[12px] font-semibold text-[#1F1F1F] truncate leading-tight">Ana Paula</span>
+<span class="text-[11px] text-[#6E6E6E] truncate">São Paulo, SP</span>
+</div>
+</div>
+<button class="w-7 h-7 rounded-[4px] flex items-center justify-center text-[#5C5C5C] hover:bg-[#F3F3F3] hover:text-[#1F1F1F] transition-colors" title="Sair">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<div class="flex-1 flex flex-col min-w-0 pb-24">
+<!-- Windows Title / Command Bar Style Topbar -->
+<header class="h-12 bg-white border-b border-[#E5E5E5] px-6 flex items-center justify-between shrink-0">
+<!-- Search -->
+<div class="flex items-center gap-3 w-full max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[17px] text-[#6E6E6E]">search</span>
+<input class="w-full h-8 pl-8 pr-16 bg-[#F9F9F9] border border-[#E5E5E5] rounded-[4px] text-[12px] text-[#1F1F1F] placeholder-[#767676] focus:outline-none focus:border-[#0E703C] focus:bg-white transition-all" placeholder="Buscar campanhas, causas ou vizinhos..." type="text"/>
+<span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[#767676] bg-[#EAEAEA] px-1.5 py-0.5 rounded font-mono">Ctrl+K</span>
+</div>
+<div class="hidden md:flex items-center gap-1.5 px-2 py-1 bg-[#F5F5F5] border border-[#E5E5E5] rounded-[4px] text-[11px] text-[#404040] whitespace-nowrap">
+<span class="material-symbols-outlined text-[15px] text-[#0E703C]">location_on</span>
+<span>São Paulo, SP</span>
+</div>
+</div>
+<!-- Quick actions -->
+<div class="flex items-center gap-2">
+<a class="h-8 px-3 rounded-[4px] bg-[#0E703C] text-white hover:bg-[#0A5A30] text-[12px] font-medium flex items-center gap-1.5 shadow-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Nova Campanha</span>
+</a>
+<button class="relative w-8 h-8 rounded-[4px] border border-[#E5E5E5] bg-white hover:bg-[#F3F3F3] text-[#404040] flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#C42B1C] rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- Content Page Body -->
+<main class="p-6 flex flex-col gap-5 max-w-[1340px] w-full mx-auto">
+<!-- Header Contextual com Barra de Passos -->
+<section class="bg-white rounded-[6px] border border-[#E5E5E5] p-5 shadow-fluent flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-[12px] font-medium text-[#0E703C]">
+<span class="material-symbols-outlined text-[16px]">eco</span>
+<span>Campanha Ativa • Heliópolis Social</span>
+</div>
+<h1 class="text-[20px] font-bold text-[#1F1F1F] tracking-tight">Doação para Horta Solidária Heliópolis</h1>
+<p class="text-[12px] text-[#5C5C5C]">
+              Escolha como apoiar: doe alimentos prioritários para as famílias ou contribua instantaneamente via Pix.
+            </p>
+</div>
+<!-- Stepper de Fluxo Fluent -->
+<div class="flex items-center gap-3 bg-[#F9F9F9] border border-[#E5E5E5] px-3 py-1.5 rounded-[6px] self-start md:self-auto">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-[4px] bg-[#0E703C] text-white flex items-center justify-center text-[11px] font-bold">1</span>
+<span class="text-[12px] font-semibold text-[#1F1F1F]">Escolher Doação</span>
+</div>
+<div class="w-6 h-[1px] bg-[#D1D1D1]"></div>
+<div class="flex items-center gap-2 opacity-60">
+<span class="w-5 h-5 rounded-[4px] bg-[#E5E5E5] text-[#5C5C5C] flex items-center justify-center text-[11px] font-bold">2</span>
+<span class="text-[12px] font-medium text-[#5C5C5C]">Entrega &amp; Recibo</span>
+</div>
+</div>
+</section>
+<!-- Painel Split Grid Lado a Lado -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+<!-- LADO ESQUERDO: Alimentos e Mantimentos (7 Colunas) -->
+<div class="lg:col-span-7 flex flex-col gap-4 bg-white rounded-[6px] border border-[#E5E5E5] p-5 shadow-fluent">
+<div class="flex items-center justify-between border-b border-[#E5E5E5] pb-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#0E703C]">
+<span class="material-symbols-outlined text-[19px]">inventory_2</span>
+</div>
+<div>
+<h2 class="text-[14px] font-semibold text-[#1F1F1F]">Doação de Alimentos e Mantimentos</h2>
+<p class="text-[12px] text-[#5C5C5C]">Selecione os mantimentos que você deseja entregar</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-[4px] bg-[#FEF6E6] border border-[#F5DCA3] text-[#8F4F00] text-[11px] font-medium">
+                Alta Prioridade
+              </span>
+</div>
+<!-- Tabela / Lista Interativa Fluent -->
+<div class="border border-[#E5E5E5] rounded-[6px] overflow-hidden bg-white">
+<div class="bg-[#F8F9FA] px-3.5 py-2 border-b border-[#E5E5E5] text-[11px] font-semibold text-[#5C5C5C] flex items-center justify-between uppercase tracking-wider">
+<span>Item e Meta</span>
+<span class="pr-6">Quantidade</span>
+</div>
+<div class="divide-y divide-[#E5E5E5]" id="foodItemsContainer">
+<!-- Item 1: Arroz -->
+<div class="item-row flex items-center justify-between px-3.5 py-2.5 hover:bg-[#F9F9F9] transition-colors" data-name="Arroz tipo 1" data-weight="5">
+<div class="flex items-center gap-3 min-w-0 flex-1">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#5C5C5C] shrink-0">
+<span class="material-symbols-outlined text-[18px]">grain</span>
+</div>
+<div class="min-w-0">
+<div class="text-[13px] font-medium text-[#1F1F1F] truncate">Arroz tipo 1 (pacote 5kg)</div>
+<div class="flex items-center gap-2 text-[11px] text-[#6E6E6E]">
+<span>Meta restante: <strong class="text-[#0E703C] font-semibold">15 pacotes</strong></span>
+<span class="text-[#D1D1D1]">•</span>
+<span class="text-[#A4262C] font-medium">Urgente</span>
+</div>
+</div>
+</div>
+<div class="flex items-center border border-[#D1D1D1] rounded-[4px] bg-white overflow-hidden shadow-xs shrink-0">
+<button aria-label="Diminuir" class="qty-btn-minus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="item-qty w-8 text-center text-[12px] font-semibold text-[#1F1F1F] select-none">2</span>
+<button aria-label="Aumentar" class="qty-btn-plus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Feijão -->
+<div class="item-row flex items-center justify-between px-3.5 py-2.5 hover:bg-[#F9F9F9] transition-colors" data-name="Feijão carioca" data-weight="1">
+<div class="flex items-center gap-3 min-w-0 flex-1">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#5C5C5C] shrink-0">
+<span class="material-symbols-outlined text-[18px]">soup_kitchen</span>
+</div>
+<div class="min-w-0">
+<div class="text-[13px] font-medium text-[#1F1F1F] truncate">Feijão carioca (pacote 1kg)</div>
+<div class="flex items-center gap-2 text-[11px] text-[#6E6E6E]">
+<span>Meta restante: <strong class="text-[#0E703C] font-semibold">30 pacotes</strong></span>
+</div>
+</div>
+</div>
+<div class="flex items-center border border-[#D1D1D1] rounded-[4px] bg-white overflow-hidden shadow-xs shrink-0">
+<button aria-label="Diminuir" class="qty-btn-minus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="item-qty w-8 text-center text-[12px] font-semibold text-[#1F1F1F] select-none">4</span>
+<button aria-label="Aumentar" class="qty-btn-plus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+</div>
+<!-- Item 3: Óleo de soja -->
+<div class="item-row flex items-center justify-between px-3.5 py-2.5 hover:bg-[#F9F9F9] transition-colors" data-name="Óleo de soja" data-weight="0.9">
+<div class="flex items-center gap-3 min-w-0 flex-1">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#5C5C5C] shrink-0">
+<span class="material-symbols-outlined text-[18px]">water_bottle</span>
+</div>
+<div class="min-w-0">
+<div class="text-[13px] font-medium text-[#1F1F1F] truncate">Óleo de soja (900ml)</div>
+<div class="flex items-center gap-2 text-[11px] text-[#6E6E6E]">
+<span>Meta restante: <strong class="text-[#0E703C] font-semibold">20 un</strong></span>
+</div>
+</div>
+</div>
+<div class="flex items-center border border-[#D1D1D1] rounded-[4px] bg-white overflow-hidden shadow-xs shrink-0">
+<button aria-label="Diminuir" class="qty-btn-minus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="item-qty w-8 text-center text-[12px] font-semibold text-[#1F1F1F] select-none">2</span>
+<button aria-label="Aumentar" class="qty-btn-plus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+</div>
+<!-- Item 4: Leite integral -->
+<div class="item-row flex items-center justify-between px-3.5 py-2.5 hover:bg-[#F9F9F9] transition-colors" data-name="Leite integral" data-weight="1">
+<div class="flex items-center gap-3 min-w-0 flex-1">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#5C5C5C] shrink-0">
+<span class="material-symbols-outlined text-[18px]">local_drink</span>
+</div>
+<div class="min-w-0">
+<div class="text-[13px] font-medium text-[#1F1F1F] truncate">Leite integral (caixa 1L)</div>
+<div class="flex items-center gap-2 text-[11px] text-[#6E6E6E]">
+<span>Meta restante: <strong class="text-[#0E703C] font-semibold">50 un</strong></span>
+<span class="text-[#D1D1D1]">•</span>
+<span class="text-[#0067B8] font-medium">Nutrição Infantil</span>
+</div>
+</div>
+</div>
+<div class="flex items-center border border-[#D1D1D1] rounded-[4px] bg-white overflow-hidden shadow-xs shrink-0">
+<button aria-label="Diminuir" class="qty-btn-minus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="item-qty w-8 text-center text-[12px] font-semibold text-[#1F1F1F] select-none">6</span>
+<button aria-label="Aumentar" class="qty-btn-plus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+</div>
+<!-- Item 5: Farinha / Fubá -->
+<div class="item-row flex items-center justify-between px-3.5 py-2.5 hover:bg-[#F9F9F9] transition-colors" data-name="Farinha de trigo / Fubá" data-weight="1">
+<div class="flex items-center gap-3 min-w-0 flex-1">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#5C5C5C] shrink-0">
+<span class="material-symbols-outlined text-[18px]">bakery_dining</span>
+</div>
+<div class="min-w-0">
+<div class="text-[13px] font-medium text-[#1F1F1F] truncate">Farinha de trigo / Fubá (1kg)</div>
+<div class="flex items-center gap-2 text-[11px] text-[#6E6E6E]">
+<span>Meta restante: <strong class="text-[#0E703C] font-semibold">15 pacotes</strong></span>
+</div>
+</div>
+</div>
+<div class="flex items-center border border-[#D1D1D1] rounded-[4px] bg-white overflow-hidden shadow-xs shrink-0">
+<button aria-label="Diminuir" class="qty-btn-minus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="item-qty w-8 text-center text-[12px] font-semibold text-[#1F1F1F] select-none">0</span>
+<button aria-label="Aumentar" class="qty-btn-plus w-7 h-7 flex items-center justify-center text-[#1F1F1F] hover:bg-[#EAEAEA] active:bg-[#DCDCDC] transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Opções de Envio / Logística -->
+<div class="flex flex-col gap-2.5 pt-2">
+<span class="text-[13px] font-semibold text-[#1F1F1F]">Forma de Entrega dos Alimentos:</span>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<label class="flex items-start gap-3 p-3 rounded-[6px] border border-[#0E703C] bg-[#F8FCF9] cursor-pointer transition-colors relative" id="labelPontoColeta">
+<input checked="" class="mt-0.5 accent-[#0E703C] h-4 w-4 cursor-pointer text-[#0E703C] focus:ring-0" name="delivery_method" type="radio" value="ponto_coleta"/>
+<div class="flex flex-col">
+<span class="text-[12px] font-semibold text-[#1F1F1F] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#0E703C]">location_on</span>
+                      Entregar no ponto de coleta
+                    </span>
+<span class="text-[11px] text-[#5C5C5C] mt-0.5">
+                      Rua das Flores, 120 - Heliópolis, SP
+                    </span>
+<span class="text-[11px] font-medium text-[#0E703C] mt-1">Segunda a Sábado, das 8h às 18h</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-3 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] cursor-pointer transition-colors relative" id="labelRetirada">
+<input class="mt-0.5 accent-[#0E703C] h-4 w-4 cursor-pointer text-[#0E703C] focus:ring-0" name="delivery_method" type="radio" value="retirada"/>
+<div class="flex flex-col">
+<span class="text-[12px] font-semibold text-[#1F1F1F] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#5C5C5C]">local_shipping</span>
+                      Agendar retirada em casa
+                    </span>
+<span class="text-[11px] text-[#5C5C5C] mt-0.5">
+                      Voluntário credenciado recolhe no seu endereço
+                    </span>
+<span class="text-[11px] text-[#6E6E6E] mt-1">Disponível em raio de até 15 km</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- LADO DIREITO: Pix Integrado Direto (5 Colunas) -->
+<div class="lg:col-span-5 flex flex-col gap-4 bg-white rounded-[6px] border border-[#E5E5E5] p-5 shadow-fluent">
+<div class="flex items-center gap-2.5 border-b border-[#E5E5E5] pb-3">
+<div class="w-8 h-8 rounded-[4px] bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center text-[#0E703C]">
+<span class="material-symbols-outlined text-[19px]">payments</span>
+</div>
+<div>
+<h2 class="text-[14px] font-semibold text-[#1F1F1F]">Ou Apoiar com Pix Instantâneo</h2>
+<p class="text-[12px] text-[#5C5C5C]">Garante a compra direta de hortaliças frescas</p>
+</div>
+</div>
+<!-- Seletor de Valor Rápido -->
+<div class="flex flex-col gap-2">
+<label class="text-[12px] font-medium text-[#5C5C5C]">Selecione o valor sugerido:</label>
+<div class="grid grid-cols-2 gap-2" id="quickValuesGrid">
+<button class="pix-val-btn flex flex-col p-2.5 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] transition-colors text-left" data-val="20">
+<span class="text-[14px] font-bold text-[#1F1F1F]">R$ 20</span>
+<span class="text-[11px] text-[#6E6E6E]">1 kit básico</span>
+</button>
+<button class="pix-val-btn flex flex-col p-2.5 rounded-[6px] border-2 border-[#0E703C] bg-[#F2F8F4] text-left" data-val="50">
+<span class="text-[14px] font-bold text-[#0E703C]">R$ 50</span>
+<span class="text-[11px] text-[#0A5A30] font-medium">Meia cesta familiar</span>
+</button>
+<button class="pix-val-btn flex flex-col p-2.5 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] transition-colors text-left" data-val="100">
+<span class="text-[14px] font-bold text-[#1F1F1F]">R$ 100</span>
+<span class="text-[11px] text-[#6E6E6E]">1 cesta completa</span>
+</button>
+<button class="pix-val-btn flex flex-col p-2.5 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] transition-colors text-left" data-val="200">
+<span class="text-[14px] font-bold text-[#1F1F1F]">R$ 200</span>
+<span class="text-[11px] text-[#6E6E6E]">Família completa / mês</span>
+</button>
+</div>
+<!-- Outro Valor -->
+<div class="flex items-center gap-2 mt-1 bg-[#F9F9F9] border border-[#E5E5E5] px-3 py-1.5 rounded-[6px]">
+<span class="text-[12px] text-[#5C5C5C]">Outro valor:</span>
+<span class="text-[12px] font-semibold text-[#1F1F1F]">R$</span>
+<input class="bg-transparent text-[13px] font-semibold text-[#1F1F1F] focus:outline-none w-full placeholder-[#A0A0A0]" id="customPixInput" placeholder="0,00" type="number"/>
+</div>
+</div>
+<!-- Card com QR Code Pix & Chave -->
+<div class="flex flex-col items-center bg-[#F9F9F9] border border-[#E5E5E5] p-4 rounded-[6px] gap-3 text-center">
+<div class="relative bg-white border border-[#E5E5E5] p-3 rounded-[6px] shadow-xs flex flex-col items-center justify-center">
+<!-- QR Code Vector Sharp Fluent -->
+<svg class="w-36 h-36 text-[#1F1F1F]" fill="currentColor" viewbox="0 0 100 100">
+<!-- Top-Left Target -->
+<rect fill="currentColor" height="28" rx="1" width="28" x="5" y="5"></rect>
+<rect fill="#FFFFFF" height="20" rx="1" width="20" x="9" y="9"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="13" y="13"></rect>
+<!-- Top-Right Target -->
+<rect fill="currentColor" height="28" rx="1" width="28" x="67" y="5"></rect>
+<rect fill="#FFFFFF" height="20" rx="1" width="20" x="71" y="9"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="75" y="13"></rect>
+<!-- Bottom-Left Target -->
+<rect fill="currentColor" height="28" rx="1" width="28" x="5" y="67"></rect>
+<rect fill="#FFFFFF" height="20" rx="1" width="20" x="9" y="71"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="13" y="75"></rect>
+<!-- QR Random Dots Pattern -->
+<rect height="5" width="5" x="38" y="8"></rect>
+<rect height="5" width="8" x="48" y="8"></rect>
+<rect height="6" width="6" x="38" y="18"></rect>
+<rect height="8" width="8" x="50" y="20"></rect>
+<rect height="6" width="8" x="10" y="38"></rect>
+<rect height="8" width="6" x="22" y="42"></rect>
+<rect height="8" width="8" x="38" y="38"></rect>
+<rect height="6" width="6" x="52" y="38"></rect>
+<rect height="6" width="10" x="66" y="40"></rect>
+<rect height="6" width="8" x="82" y="42"></rect>
+<rect height="8" width="6" x="38" y="52"></rect>
+<rect height="6" width="12" x="48" y="52"></rect>
+<rect height="8" width="8" x="66" y="54"></rect>
+<rect height="6" width="10" x="80" y="56"></rect>
+<rect height="6" width="10" x="38" y="66"></rect>
+<rect height="8" width="8" x="54" y="68"></rect>
+<rect height="10" width="8" x="42" y="78"></rect>
+<rect height="6" width="10" x="58" y="82"></rect>
+<rect height="8" width="8" x="74" y="72"></rect>
+<rect height="12" width="8" x="86" y="78"></rect>
+</svg>
+<div class="mt-1 text-[10px] font-semibold text-[#0E703C] uppercase tracking-wider">
+                  Pix Banco Central
+                </div>
+</div>
+<!-- Chave Pix -->
+<div class="w-full flex flex-col gap-1.5">
+<span class="text-[11px] text-[#5C5C5C]">Chave Pix Aleatória:</span>
+<div class="flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2.5 py-1 rounded-[4px] shadow-xs">
+<input class="text-[11px] font-mono text-[#1F1F1F] bg-transparent focus:outline-none w-full truncate select-all" id="pixKeyText" readonly="" type="text" value="f89b1c94-73d8-4f1a-b601-heliopolis024"/>
+<button class="flex items-center gap-1 text-[#0E703C] hover:text-[#0A5A30] text-[11px] font-semibold shrink-0 py-1 px-2 rounded-[3px] hover:bg-[#F3F3F3] transition-colors" id="copyPixBtn">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+<span>Copiar</span>
+</button>
+</div>
+<span class="hidden text-[#0E703C] text-[11px] font-medium" id="copySuccessBadge">Chave Pix copiada com sucesso!</span>
+</div>
+</div>
+<!-- Como Funciona 3 Passos -->
+<div class="flex flex-col gap-2 bg-[#F9F9F9] border border-[#E5E5E5] p-3 rounded-[6px]">
+<span class="text-[11px] text-[#5C5C5C] uppercase font-bold tracking-wider">Como funciona:</span>
+<div class="grid grid-cols-3 gap-2 text-center pt-0.5">
+<div class="flex flex-col items-center gap-1">
+<div class="w-5 h-5 rounded-[3px] bg-white border border-[#D1D1D1] text-[#1F1F1F] flex items-center justify-center text-[10px] font-bold">1</div>
+<span class="text-[11px] text-[#5C5C5C] leading-snug">Abra o app do seu banco</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-5 h-5 rounded-[3px] bg-white border border-[#D1D1D1] text-[#1F1F1F] flex items-center justify-center text-[10px] font-bold">2</div>
+<span class="text-[11px] text-[#5C5C5C] leading-snug">Escaneie ou cole o código</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-5 h-5 rounded-[3px] bg-white border border-[#D1D1D1] text-[#1F1F1F] flex items-center justify-center text-[10px] font-bold">3</div>
+<span class="text-[11px] text-[#5C5C5C] leading-snug">Confirmação instantânea</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Barra Inferior de Ação (Command Bar Fluent Nativa) -->
+<footer class="fixed bottom-0 left-64 right-0 bg-white/95 backdrop-blur-md border-t border-[#E5E5E5] px-6 py-2.5 z-40 shadow-fluent-elevation">
+<div class="max-w-[1340px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<!-- Resumo de Itens -->
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<div class="w-8 h-8 rounded-[4px] bg-[#E9F5ED] text-[#0E703C] border border-[#C6E6D1] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[19px]">shopping_bag</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="text-[13px] font-semibold text-[#1F1F1F]" id="summaryItemsTotal">Total selecionado: 14 itens alimentícios</span>
+<span class="px-1.5 py-0.5 rounded-[3px] bg-[#F0F0F0] border border-[#E5E5E5] text-[#5C5C5C] text-[10px] font-medium">Físico</span>
+</div>
+<span class="text-[11px] text-[#5C5C5C] flex items-center gap-1" id="summaryWeightTotal">
+<span class="material-symbols-outlined text-[13px] text-[#6E6E6E]">scale</span>
+                Estimativa de peso: ~26.0 kg
+              </span>
+</div>
+</div>
+<!-- Botões de Ação Fluent -->
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+<button class="h-8 px-3 rounded-[4px] border border-[#D1D1D1] bg-white hover:bg-[#F3F3F3] active:bg-[#EAEAEA] text-[12px] font-medium text-[#1F1F1F] transition-colors">
+              Salvar Rascunho
+            </button>
+<button class="h-8 px-4 rounded-[4px] bg-[#0E703C] hover:bg-[#0A5A30] active:bg-[#084926] text-white text-[12px] font-semibold flex items-center gap-1.5 shadow-sm transition-colors" id="btnConfirmDonation">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Confirmar e Registrar Doação de Itens</span>
+</button>
+</div>
+</div>
+</footer>
+</div>
+</div>
+<script>
+    // Lógica de cálculo de itens e peso
+    const updateSummary = () => {
+      let totalItems = 0;
+      let totalWeight = 0;
+      
+      document.querySelectorAll('.item-row').forEach(row => {
+        const qty = parseInt(row.querySelector('.item-qty').textContent, 10) || 0;
+        const weight = parseFloat(row.dataset.weight) || 1;
+        totalItems += qty;
+        totalWeight += qty * weight;
+      });
+
+      const itemsSummary = document.getElementById('summaryItemsTotal');
+      const weightSummary = document.getElementById('summaryWeightTotal');
+      const confirmBtn = document.getElementById('btnConfirmDonation');
+
+      itemsSummary.textContent = `Total selecionado: ${totalItems} ${totalItems === 1 ? 'item alimentício' : 'itens alimentícios'}`;
+      weightSummary.innerHTML = `<span class="material-symbols-outlined text-[13px] text-[#6E6E6E]">scale</span> Estimativa de peso: ~${totalWeight.toFixed(1)} kg`;
+
+      if (totalItems === 0) {
+        confirmBtn.classList.add('opacity-50', 'pointer-events-none');
+      } else {
+        confirmBtn.classList.remove('opacity-50', 'pointer-events-none');
+      }
+    };
+
+    // Controles numéricos discretos Fluent (- / +)
+    document.querySelectorAll('.item-row').forEach(row => {
+      const qtySpan = row.querySelector('.item-qty');
+      const btnMinus = row.querySelector('.qty-btn-minus');
+      const btnPlus = row.querySelector('.qty-btn-plus');
+
+      btnMinus.addEventListener('click', () => {
+        let val = parseInt(qtySpan.textContent, 10) || 0;
+        if (val > 0) {
+          val -= 1;
+          qtySpan.textContent = val;
+          updateSummary();
+        }
+      });
+
+      btnPlus.addEventListener('click', () => {
+        let val = parseInt(qtySpan.textContent, 10) || 0;
+        val += 1;
+        qtySpan.textContent = val;
+        updateSummary();
+      });
+    });
+
+    // Mudança visual dos cartões de entrega ao selecionar radio
+    const radioDelivery = document.querySelectorAll('input[name="delivery_method"]');
+    const labelPonto = document.getElementById('labelPontoColeta');
+    const labelRetirada = document.getElementById('labelRetirada');
+
+    radioDelivery.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'ponto_coleta') {
+          labelPonto.className = "flex items-start gap-3 p-3 rounded-[6px] border border-[#0E703C] bg-[#F8FCF9] cursor-pointer transition-colors relative";
+          labelRetirada.className = "flex items-start gap-3 p-3 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] cursor-pointer transition-colors relative";
+        } else {
+          labelRetirada.className = "flex items-start gap-3 p-3 rounded-[6px] border border-[#0E703C] bg-[#F8FCF9] cursor-pointer transition-colors relative";
+          labelPonto.className = "flex items-start gap-3 p-3 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] cursor-pointer transition-colors relative";
+        }
+      });
+    });
+
+    // Copiar Chave Pix
+    const copyBtn = document.getElementById('copyPixBtn');
+    const pixInput = document.getElementById('pixKeyText');
+    const successBadge = document.getElementById('copySuccessBadge');
+
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(pixInput.value).then(() => {
+        successBadge.classList.remove('hidden');
+        copyBtn.innerHTML = `<span class="material-symbols-outlined text-[15px] text-[#0E703C]">check</span><span class="text-[#0E703C]">Copiado!</span>`;
+        setTimeout(() => {
+          successBadge.classList.add('hidden');
+          copyBtn.innerHTML = `<span class="material-symbols-outlined text-[15px]">content_copy</span><span>Copiar</span>`;
+        }, 3000);
+      });
+    });
+
+    // Seletores de Pix Fluent
+    const pixBtns = document.querySelectorAll('.pix-val-btn');
+    const customPix = document.getElementById('customPixInput');
+
+    pixBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        pixBtns.forEach(b => {
+          b.className = 'pix-val-btn flex flex-col p-2.5 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] transition-colors text-left';
+          const title = b.querySelector('span:first-child');
+          const sub = b.querySelector('span:last-child');
+          if (title) title.className = 'text-[14px] font-bold text-[#1F1F1F]';
+          if (sub) sub.className = 'text-[11px] text-[#6E6E6E]';
+        });
+
+        btn.className = 'pix-val-btn flex flex-col p-2.5 rounded-[6px] border-2 border-[#0E703C] bg-[#F2F8F4] text-left';
+        const activeTitle = btn.querySelector('span:first-child');
+        const activeSub = btn.querySelector('span:last-child');
+        if (activeTitle) activeTitle.className = 'text-[14px] font-bold text-[#0E703C]';
+        if (activeSub) activeSub.className = 'text-[11px] text-[#0A5A30] font-medium';
+        
+        customPix.value = '';
+      });
+    });
+
+    customPix.addEventListener('focus', () => {
+      pixBtns.forEach(b => {
+        b.className = 'pix-val-btn flex flex-col p-2.5 rounded-[6px] border border-[#E5E5E5] bg-white hover:bg-[#F9F9F9] transition-colors text-left';
+        const title = b.querySelector('span:first-child');
+        const sub = b.querySelector('span:last-child');
+        if (title) title.className = 'text-[14px] font-bold text-[#1F1F1F]';
+        if (sub) sub.className = 'text-[11px] text-[#6E6E6E]';
+      });
+    });
+
+    // Ação de confirmação de itens
+    document.getElementById('btnConfirmDonation').addEventListener('click', () => {
+      const radio = document.querySelector('input[name="delivery_method"]:checked').value;
+      const methodStr = radio === 'ponto_coleta' ? 'Entrega no Ponto de Coleta em Heliópolis' : 'Agendamento de Retirada em Casa';
+      alert(`Doação registrada com sucesso!\nModalidade: ${methodStr}\nUm comprovante detalhado e as instruções foram enviados para o seu e-mail.`);
+    });
+  </script>
+</body></html>
