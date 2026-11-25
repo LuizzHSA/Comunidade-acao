@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:comunidade_em_acao/main.dart';
 import 'package:comunidade_em_acao/screens/campaign_details_screen.dart';
 import 'package:comunidade_em_acao/screens/donate_items_screen.dart';
-import 'package:comunidade_em_acao/screens_windows/windows_shell.dart';
 import 'package:comunidade_em_acao/state/app_state.dart';
 
 // Mock transparent 1x1 png for test environment
@@ -99,7 +98,7 @@ void main() {
     await tester.pumpWidget(
       ChangeNotifierProvider<AppState>.value(
         value: state,
-        child: const ComunidadeEmAcaoApp(initialWindowsMode: false),
+        child: const ComunidadeEmAcaoApp(),
       ),
     );
 
@@ -159,62 +158,5 @@ void main() {
     expect(find.text('Doar Itens para a Campanha'), findsOneWidget);
     expect(find.text('Passo 1 de 2'), findsOneWidget);
     expect(find.text('Confirmar Doação de Itens'), findsOneWidget);
-  });
-
-  testWidgets('Windows Fluent Shell renders sidebar, topbar, dashboard, and navigates', (WidgetTester tester) async {
-    // Set desktop window size
-    tester.view.physicalSize = const Size(1280, 800);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-
-    final state = AppState();
-
-    await tester.pumpWidget(
-      ChangeNotifierProvider<AppState>.value(
-        value: state,
-        child: const MaterialApp(
-          home: WindowsShell(),
-        ),
-      ),
-    );
-
-    await tester.pumpAndSettle();
-
-    // Verify Windows Fluent Sidebar
-    expect(find.text('Comunidade'), findsOneWidget);
-    expect(find.text('EM AÇÃO'), findsOneWidget);
-    expect(find.text('Início / Feed'), findsOneWidget);
-    expect(find.text('Explorar Campanhas'), findsOneWidget);
-    expect(find.text('Minhas Doações'), findsOneWidget);
-    expect(find.text('Criar Campanha'), findsOneWidget);
-    expect(find.text('Impacto & Transparência'), findsOneWidget);
-    expect(find.text('Configurações'), findsOneWidget);
-    expect(find.text('Ana Paula'), findsOneWidget);
-
-    // Verify Windows Command Bar Topbar
-    expect(find.text('Ctrl+K'), findsOneWidget);
-    expect(find.text('São Paulo, SP'), findsWidgets);
-    expect(find.text('Nova Campanha'), findsOneWidget);
-
-    // Verify Dashboard Banner and Campaigns
-    expect(find.text('ZONA SUL E REGIÃO METROPOLITANA'), findsOneWidget);
-    expect(find.text('Famílias apoiadas'), findsOneWidget);
-    expect(find.text('Campanha do Agasalho 2025'), findsWidgets);
-    expect(find.text('Horta Solidária e Cestas Básicas para 120 Famílias'), findsOneWidget);
-
-    // Test navigation to Minhas Doações tab
-    await tester.tap(find.text('Minhas Doações'));
-    await tester.pumpAndSettle();
-    expect(find.text('Minhas Contribuições Solidárias'), findsOneWidget);
-    expect(find.text('CAMPANHA / CAUSA'), findsOneWidget);
-
-    // Test navigation to Criar Campanha tab
-    await tester.tap(find.text('Criar Campanha'));
-    await tester.pumpAndSettle();
-    expect(find.text('Criar Nova Campanha Comunitária'), findsOneWidget);
-    expect(find.text('1. Informações Essenciais da Causa'), findsOneWidget);
-    expect(find.text('Pré-visualização do Feed'), findsOneWidget);
-    expect(find.text('Publicar Campanha'), findsOneWidget);
   });
 }

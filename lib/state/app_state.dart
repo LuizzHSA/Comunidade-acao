@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
+
 import '../models/models.dart';
 import '../services/firestore_service.dart';
 
@@ -12,24 +14,32 @@ class AppState extends ChangeNotifier {
   String? _currentUserId;
 
   bool get isCloudConnected => _currentUserId != null;
-  UserProfile _user = UserProfile(
+
+  /// Perfil de demonstração usado ao abrir o app e após sair da conta.
+  static UserProfile _demoProfile() => UserProfile(
     name: 'Ana Paula',
     email: 'ana.paula@exemplo.com.br',
-    avatarUrl:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBa0dQYvBfViFE6fzjplsP-d9tgmdwFZPIXemVuPCQJOT7eDxjr2ssLnzx3EsEcjKisUYQcs2ptbQeaf24je_oclmSfCRlQHvgFBVa3SAFZVytpu0nL1DKJlrEf3JDcImD9EZ2LouAeSj2DbOok0M67avyAQm9zBnmK9NZlUUko7QQuXX9JC_9jPT-mtur4tsYk5y54ji8s_ouGIFiUNa-V3GoC5JUUlo_bjvdqxwE',
+    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBa0dQYvBfViFE6fzjplsP-d9tgmdwFZPIXemVuPCQJOT7eDxjr2ssLnzx3EsEcjKisUYQcs2ptbQeaf24je_oclmSfCRlQHvgFBVa3SAFZVytpu0nL1DKJlrEf3JDcImD9EZ2LouAeSj2DbOok0M67avyAQm9zBnmK9NZlUUko7QQuXX9JC_9jPT-mtur4tsYk5y54ji8s_ouGIFiUNa-V3GoC5JUUlo_bjvdqxwE',
     city: 'São Paulo, SP',
     donationsCount: 6,
     totalItemsDonated: 42,
   );
 
+  UserProfile _user = _demoProfile();
+
   bool _isAuthenticated = false;
-  bool _preferWindowsLayout = defaultTargetPlatform == TargetPlatform.windows;
   String _selectedCategory = 'Todos';
   String _searchQuery = '';
   String _selectedDeliveryMethod = 'point'; // 'point' or 'pickup'
   String _pickupAddress = '';
   int _currentNavIndex = 0;
   bool _hasUnreadNotifications = true;
+
+  // Preferências do perfil.
+  bool _isProfilePublic = true;
+  bool _notifyNewCampaigns = true;
+  bool _notifyDonationStatus = true;
+  bool _shareCity = true;
 
   // Selected quantities for donation items matching Screen 4 defaults
   final Map<String, int> _itemQuantities = {
@@ -60,10 +70,7 @@ class AppState extends ChangeNotifier {
       campaignId: 'campanha-agasalho',
       campaignTitle: 'Campanha do Agasalho 2025',
       date: DateTime.now().subtract(const Duration(days: 12)),
-      itemsWithQty: {
-        'Casaco de Inverno Adulto': 2,
-        'Cobertor Térmico': 3,
-      },
+      itemsWithQty: {'Casaco de Inverno Adulto': 2, 'Cobertor Térmico': 3},
       totalCount: 5,
       deliveryMethod: 'Ponto de Coleta',
       address: 'Estação Brás - Ponto Solidário',
@@ -83,12 +90,9 @@ class AppState extends ChangeNotifier {
       Campaign(
         id: 'horta-heliopolis',
         title: 'Horta Solidária e Cestas Básicas para 120 Famílias',
-        subtitle:
-            'Distribuição semanal de alimentos frescos e oficinas de agricultura sustentável para famílias periféricas.',
-        description:
-            'A fome não pode esperar. Em Heliópolis, unimos a colheita fresca da nossa horta agroecológica com alimentos não perecíveis essenciais para garantir segurança alimentar e dignidade a 120 lares chefiados por mulheres em situação de vulnerabilidade extrema.',
-        highlightText:
-            'Cada cesta inclui legumes sem agrotóxicos cultivados por agricultores urbanos locais + mantimentos secos essenciais para 30 dias de sustento familiar.',
+        subtitle: 'Distribuição semanal de alimentos frescos e oficinas de agricultura sustentável para famílias periféricas.',
+        description: 'A fome não pode esperar. Em Heliópolis, unimos a colheita fresca da nossa horta agroecológica com alimentos não perecíveis essenciais para garantir segurança alimentar e dignidade a 120 lares chefiados por mulheres em situação de vulnerabilidade extrema.',
+        highlightText: 'Cada cesta inclui legumes sem agrotóxicos cultivados por agricultores urbanos locais + mantimentos secos essenciais para 30 dias de sustento familiar.',
         organizationName: 'ONG Mãos Dadas',
         organizationYears: 'Atuando há 8 anos na comunidade',
         isVerified: true,
@@ -147,12 +151,9 @@ class AppState extends ChangeNotifier {
       Campaign(
         id: 'campanha-agasalho',
         title: 'Campanha do Agasalho 2025',
-        subtitle:
-            'Meta de aquecer 1.200 famílias em situação de vulnerabilidade extrema na Grande São Paulo.',
-        description:
-            'Com a chegada das noites geladas de inverno, muitas pessoas em abrigos e comunidades carentes enfrentam frio intenso sem agasalho ou cobertores adequados. Doe agasalhos, meias e cobertores em bom estado.',
-        highlightText:
-            'Todos os agasalhos doados são triados, higienizados e entregues diretamente com apoio das lideranças comunitárias locais.',
+        subtitle: 'Meta de aquecer 1.200 famílias em situação de vulnerabilidade extrema na Grande São Paulo.',
+        description: 'Com a chegada das noites geladas de inverno, muitas pessoas em abrigos e comunidades carentes enfrentam frio intenso sem agasalho ou cobertores adequados. Doe agasalhos, meias e cobertores em bom estado.',
+        highlightText: 'Todos os agasalhos doados são triados, higienizados e entregues diretamente com apoio das lideranças comunitárias locais.',
         organizationName: 'Rede Solidária SP',
         organizationYears: 'Atuando há 12 anos na capital',
         isVerified: true,
@@ -191,12 +192,9 @@ class AppState extends ChangeNotifier {
       Campaign(
         id: 'reforma-creche',
         title: 'Reforma da Creche Esperança',
-        subtitle:
-            'Necessitamos de tintas, mão de obra voluntária para reparo do teto e troca de fiação antes do retorno das aulas.',
-        description:
-            'A Creche Esperança atende 85 crianças enquanto suas mães trabalham. O telhado sofreu infiltrações graves e a parte elétrica requer reforma urgente para segurança de todas as crianças.',
-        highlightText:
-            'Com a sua doação ou voluntariado no mutirão, as salas serão reabertas a tempo do ano letivo com total conforto e segurança.',
+        subtitle: 'Necessitamos de tintas, mão de obra voluntária para reparo do teto e troca de fiação antes do retorno das aulas.',
+        description: 'A Creche Esperança atende 85 crianças enquanto suas mães trabalham. O telhado sofreu infiltrações graves e a parte elétrica requer reforma urgente para segurança de todas as crianças.',
+        highlightText: 'Com a sua doação ou voluntariado no mutirão, as salas serão reabertas a tempo do ano letivo com total conforto e segurança.',
         organizationName: 'Associação Creche Esperança',
         organizationYears: '15 anos de história',
         isVerified: true,
@@ -237,12 +235,9 @@ class AppState extends ChangeNotifier {
       Campaign(
         id: 'kits-aleman',
         title: 'Kits Escolares para o Alemão',
-        subtitle:
-            'Mochilas com cadernos, lápis de cor e estojos completos para incentivar a permanência de 200 crianças na escola.',
-        description:
-            'A educação é a ferramenta mais transformadora para quebrar ciclos de pobreza. Nosso objetivo é garantir que nenhuma criança comece as aulas sem o material básico necessário.',
-        highlightText:
-            'Cada kit contém: mochila resistente, 4 cadernos capa dura, estojo com lápis de cor, canetas, régua, borracha e tesoura sem ponta.',
+        subtitle: 'Mochilas com cadernos, lápis de cor e estojos completos para incentivar a permanência de 200 crianças na escola.',
+        description: 'A educação é a ferramenta mais transformadora para quebrar ciclos de pobreza. Nosso objetivo é garantir que nenhuma criança comece as aulas sem o material básico necessário.',
+        highlightText: 'Cada kit contém: mochila resistente, 4 cadernos capa dura, estojo com lápis de cor, canetas, régua, borracha e tesoura sem ponta.',
         organizationName: 'Vozes da Comunidade Alemão',
         organizationYears: '6 anos promovendo educação',
         isVerified: true,
@@ -276,7 +271,6 @@ class AppState extends ChangeNotifier {
   // Getters
   UserProfile get user => _user;
   bool get isAuthenticated => _isAuthenticated;
-  bool get preferWindowsLayout => _preferWindowsLayout;
   String get selectedCategory => _selectedCategory;
   String get searchQuery => _searchQuery;
   String get selectedDeliveryMethod => _selectedDeliveryMethod;
@@ -286,18 +280,84 @@ class AppState extends ChangeNotifier {
   Map<String, int> get itemQuantities => _itemQuantities;
   List<DonationRecord> get donationHistory => _donationHistory;
 
+  bool get isProfilePublic => _isProfilePublic;
+  bool get notifyNewCampaigns => _notifyNewCampaigns;
+  bool get notifyDonationStatus => _notifyDonationStatus;
+  bool get shareCity => _shareCity;
+
+  /// Nível de impacto calculado pelos itens realmente doados.
+  ImpactLevel get impactLevel => ImpactLevel.forItems(_user.totalItemsDonated);
+
+  /// Quantidade de campanhas diferentes que já receberam doações.
+  int get campaignsSupported =>
+      _donationHistory.map((d) => d.campaignId).toSet().length;
+
+  /// Doação mais recente, ou null quando ainda não houve nenhuma.
+  DonationRecord? get lastDonation {
+    if (_donationHistory.isEmpty) return null;
+    return _donationHistory.reduce((a, b) => a.date.isAfter(b.date) ? a : b);
+  }
+
+  /// Conquistas derivadas do histórico real do usuário.
+  List<Achievement> get achievements {
+    final donations = _user.donationsCount;
+    final items = _user.totalItemsDonated;
+    return [
+      Achievement(
+        title: 'Primeira Doação',
+        description: 'Você já deu o primeiro passo.',
+        emoji: '🎁',
+        unlocked: donations >= 1,
+      ),
+      Achievement(
+        title: 'Doador Frequente',
+        description: '5 doações registradas.',
+        emoji: '💚',
+        unlocked: donations >= 5,
+      ),
+      Achievement(
+        title: '10 Itens',
+        description: '10 itens doados para a comunidade.',
+        emoji: '📦',
+        unlocked: items >= 10,
+      ),
+      Achievement(
+        title: '50 Itens',
+        description: '50 itens doados para a comunidade.',
+        emoji: '🚚',
+        unlocked: items >= 50,
+      ),
+      Achievement(
+        title: 'Multi-causas',
+        description: 'Apoiou 2 campanhas diferentes.',
+        emoji: '🌍',
+        unlocked: campaignsSupported >= 2,
+      ),
+      Achievement(
+        title: 'Guardião do Impacto',
+        description: 'Alcançou o nível Transformador.',
+        emoji: '🏆',
+        unlocked: items >= 100,
+      ),
+    ];
+  }
+
   int get totalSelectedItemsCount {
     return _itemQuantities.values.fold(0, (sum, count) => sum + count);
   }
 
   List<Campaign> get filteredCampaigns {
     return _campaigns.where((campaign) {
-      final matchesSearch = _searchQuery.isEmpty ||
+      final matchesSearch =
+          _searchQuery.isEmpty ||
           campaign.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          campaign.location.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          campaign.location.toLowerCase().contains(
+            _searchQuery.toLowerCase(),
+          ) ||
           campaign.subtitle.toLowerCase().contains(_searchQuery.toLowerCase());
 
-      final matchesCategory = _selectedCategory == 'Todos' ||
+      final matchesCategory =
+          _selectedCategory == 'Todos' ||
           campaign.category.toLowerCase() == _selectedCategory.toLowerCase() ||
           (_selectedCategory == 'Dinheiro / Pix' && campaign.pixKey != null);
 
@@ -306,14 +366,14 @@ class AppState extends ChangeNotifier {
   }
 
   Campaign get featuredCampaign => _campaigns.firstWhere(
-        (c) => c.id == 'campanha-agasalho',
-        orElse: () => _campaigns.first,
-      );
+    (c) => c.id == 'campanha-agasalho',
+    orElse: () => _campaigns.first,
+  );
 
   Campaign get mainCampaign => _campaigns.firstWhere(
-        (c) => c.id == 'horta-heliopolis',
-        orElse: () => _campaigns.first,
-      );
+    (c) => c.id == 'horta-heliopolis',
+    orElse: () => _campaigns.first,
+  );
 
   // Actions
   void setAuthenticated(bool value) {
@@ -321,8 +381,33 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPreferWindowsLayout(bool value) {
-    _preferWindowsLayout = value;
+  /// Atualiza os dados editáveis do perfil.
+  void updateProfile({String? name, String? city, String? bio}) {
+    _user = _user.copyWith(
+      name: name?.trim().isEmpty == true ? _user.name : name?.trim(),
+      city: city?.trim().isEmpty == true ? _user.city : city?.trim(),
+      bio: bio?.trim(),
+    );
+    notifyListeners();
+  }
+
+  void setProfilePublic(bool value) {
+    _isProfilePublic = value;
+    notifyListeners();
+  }
+
+  void setNotifyNewCampaigns(bool value) {
+    _notifyNewCampaigns = value;
+    notifyListeners();
+  }
+
+  void setNotifyDonationStatus(bool value) {
+    _notifyDonationStatus = value;
+    notifyListeners();
+  }
+
+  void setShareCity(bool value) {
+    _shareCity = value;
     notifyListeners();
   }
 
@@ -363,6 +448,60 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// Login com Google via Firebase Auth.
+  /// Retorna uma mensagem de erro ou null em caso de sucesso.
+  Future<String?> loginWithGoogle() async {
+    try {
+      final cred = await _service.signInWithGoogle();
+      final googleUser = cred.user;
+      _currentUserId = googleUser?.uid;
+      _isAuthenticated = true;
+
+      final displayName = googleUser?.displayName?.trim() ?? '';
+      final email = googleUser?.email ?? '';
+      _user = UserProfile(
+        name: displayName.isNotEmpty
+            ? displayName
+            : (email.contains('@') ? email.split('@').first : 'Doador'),
+        email: email,
+        avatarUrl: googleUser?.photoURL ?? '',
+        city: '',
+      );
+
+      _startSync();
+      notifyListeners();
+      return null;
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'operation-not-allowed':
+          return 'O login com Google não está ativado neste projeto Firebase.';
+        case 'account-exists-with-different-credential':
+          return 'Já existe uma conta com este e-mail usando senha. Entre com e-mail e senha.';
+        case 'network-request-failed':
+          return 'Sem conexão. Verifique sua internet.';
+        case 'popup-closed-by-user':
+        case 'cancelled':
+          return 'Login com Google cancelado.';
+        default:
+          return 'Não foi possível entrar com Google: ${e.message ?? e.code}';
+      }
+    } on UnsupportedError {
+      return 'Login com Google está disponível no Android, iOS e Web. '
+          'No computador, use e-mail e senha.';
+    } catch (e) {
+      // Firebase indisponível ou recurso não suportado nesta plataforma.
+      final text = e.toString().toLowerCase();
+      if (text.contains('unsupported') ||
+          text.contains('not supported') ||
+          text.contains('notimplemented') ||
+          text.contains('missingplugin')) {
+        return 'Login com Google está disponível no Android, iOS e Web. '
+            'No computador, use e-mail e senha.';
+      }
+      return 'Não foi possível entrar com Google. Tente novamente.';
+    }
+  }
+
   /// Inicia as streams do Firestore. Em caso de falha, o app segue
   /// funcionando com os dados demo em memória.
   void _startSync() {
@@ -370,29 +509,23 @@ class AppState extends ChangeNotifier {
     _donationsSub?.cancel();
 
     try {
-      _campaignsSub = _service.campaignsStream().listen(
-        (remote) {
-          if (remote.isNotEmpty) {
-            _campaigns = remote;
-            notifyListeners();
-          }
-        },
-        onError: (_) {},
-      );
+      _campaignsSub = _service.campaignsStream().listen((remote) {
+        if (remote.isNotEmpty) {
+          _campaigns = remote;
+          notifyListeners();
+        }
+      }, onError: (_) {});
 
       final uid = _currentUserId;
       if (uid != null) {
-        _donationsSub = _service.donationsStream(uid).listen(
-          (remote) {
-            if (remote.isNotEmpty) {
-              _donationHistory
-                ..clear()
-                ..addAll(remote);
-              notifyListeners();
-            }
-          },
-          onError: (_) {},
-        );
+        _donationsSub = _service.donationsStream(uid).listen((remote) {
+          if (remote.isNotEmpty) {
+            _donationHistory
+              ..clear()
+              ..addAll(remote);
+            notifyListeners();
+          }
+        }, onError: (_) {});
       }
 
       // Seed inicial (ignora falhas: segue em modo demo).
@@ -410,6 +543,7 @@ class AppState extends ChangeNotifier {
     _currentUserId = null;
     _isAuthenticated = false;
     _currentNavIndex = 0;
+    _user = _demoProfile();
     notifyListeners();
     try {
       _service.signOut().catchError((_) {});
@@ -496,19 +630,21 @@ class AppState extends ChangeNotifier {
     // Grava no Firestore (silencioso: se falhar, segue com dado local).
     if (isCloudConnected) {
       _service
-          .addDonation(DonationRecord(
-            id: newRecord.id,
-            campaignId: newRecord.campaignId,
-            campaignTitle: newRecord.campaignTitle,
-            date: newRecord.date,
-            itemsWithQty: newRecord.itemsWithQty,
-            totalCount: newRecord.totalCount,
-            deliveryMethod: newRecord.deliveryMethod,
-            address: newRecord.address,
-            status: newRecord.status,
-            receiptCode: newRecord.receiptCode,
-            userId: _currentUserId,
-          ))
+          .addDonation(
+            DonationRecord(
+              id: newRecord.id,
+              campaignId: newRecord.campaignId,
+              campaignTitle: newRecord.campaignTitle,
+              date: newRecord.date,
+              itemsWithQty: newRecord.itemsWithQty,
+              totalCount: newRecord.totalCount,
+              deliveryMethod: newRecord.deliveryMethod,
+              address: newRecord.address,
+              status: newRecord.status,
+              receiptCode: newRecord.receiptCode,
+              userId: _currentUserId,
+            ),
+          )
           .catchError((_) {});
     }
 
@@ -542,7 +678,7 @@ class AppState extends ChangeNotifier {
       targetProgressLabel: targetLabel,
       supportersCount: 1,
       imageUrls: [
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuAaTSkNcQAJ801onqGs3ydQX5lZUg3k3_0F0ilTnC9t_c-fDYZ_NgihjUuoEJU3ZTrD0uEXogF_OymTurf08m2Tk2kAgo1LV6p23TohT9sLDbBvxLHRNY95mSBozeFEnZ8t8YKQAk_UkxWHZ7122xvtxhVWN0aG_LhnkLCesdPcLZbhYxod6ZYGBfprSyxud1vgwIe0d5QS42v2oONnNoLi0OuiXbNrQ6L5dH7Kc7U'
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuAaTSkNcQAJ801onqGs3ydQX5lZUg3k3_0F0ilTnC9t_c-fDYZ_NgihjUuoEJU3ZTrD0uEXogF_OymTurf08m2Tk2kAgo1LV6p23TohT9sLDbBvxLHRNY95mSBozeFEnZ8t8YKQAk_UkxWHZ7122xvtxhVWN0aG_LhnkLCesdPcLZbhYxod6ZYGBfprSyxud1vgwIe0d5QS42v2oONnNoLi0OuiXbNrQ6L5dH7Kc7U',
       ],
       needItems: [
         DonationItem(
@@ -573,4 +709,3 @@ class AppState extends ChangeNotifier {
     super.dispose();
   }
 }
-

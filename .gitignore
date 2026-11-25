@@ -48,3 +48,9 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Windows / Google Drive sync artifacts
+desktop.ini
+**/desktop.ini
+Thumbs.db
+**/Thumbs.db

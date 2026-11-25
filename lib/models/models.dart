@@ -208,6 +208,7 @@ class UserProfile {
   final String email;
   final String avatarUrl;
   final String city;
+  final String bio;
   final int donationsCount;
   final int totalItemsDonated;
 
@@ -216,6 +217,7 @@ class UserProfile {
     required this.email,
     this.avatarUrl = '',
     this.city = '',
+    this.bio = '',
     this.donationsCount = 0,
     this.totalItemsDonated = 0,
   });
@@ -225,6 +227,7 @@ class UserProfile {
     String? email,
     String? avatarUrl,
     String? city,
+    String? bio,
     int? donationsCount,
     int? totalItemsDonated,
   }) {
@@ -233,8 +236,105 @@ class UserProfile {
       email: email ?? this.email,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       city: city ?? this.city,
+      bio: bio ?? this.bio,
       donationsCount: donationsCount ?? this.donationsCount,
       totalItemsDonated: totalItemsDonated ?? this.totalItemsDonated,
     );
   }
+
+  /// Iniciais usadas quando a foto não carrega.
+  String get initials {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts.first.isEmpty) return '?';
+    final first = parts.first[0];
+    final last = parts.length > 1 ? parts.last[0] : '';
+    return '$first$last'.toUpperCase();
+  }
+}
+
+/// Faixa de impacto do doador, calculada a partir do total de itens doados.
+class ImpactLevel {
+  final int level;
+  final String title;
+  final String emoji;
+  final int minItems;
+  final int nextLevelAt; // 0 quando é o nível mais alto.
+
+  const ImpactLevel({
+    required this.level,
+    required this.title,
+    required this.emoji,
+    required this.minItems,
+    this.nextLevelAt = 0,
+  });
+
+  static const List<ImpactLevel> levels = [
+    ImpactLevel(
+      level: 1,
+      title: 'Semente',
+      emoji: '🌱',
+      minItems: 0,
+      nextLevelAt: 10,
+    ),
+    ImpactLevel(
+      level: 2,
+      title: 'Broto',
+      emoji: '🌿',
+      minItems: 10,
+      nextLevelAt: 30,
+    ),
+    ImpactLevel(
+      level: 3,
+      title: 'Colaborador',
+      emoji: '🤝',
+      minItems: 30,
+      nextLevelAt: 60,
+    ),
+    ImpactLevel(
+      level: 4,
+      title: 'Agente de Mudança',
+      emoji: '⭐',
+      minItems: 60,
+      nextLevelAt: 100,
+    ),
+    ImpactLevel(level: 5, title: 'Transformador', emoji: '🏆', minItems: 100),
+  ];
+
+  static ImpactLevel forItems(int items) {
+    var current = levels.first;
+    for (final level in levels) {
+      if (items >= level.minItems) current = level;
+    }
+    return current;
+  }
+
+  bool get isMax => nextLevelAt == 0;
+
+  /// Progresso (0.0 a 1.0) dentro do nível atual.
+  double progressFor(int items) {
+    if (isMax) return 1;
+    final span = nextLevelAt - minItems;
+    if (span <= 0) return 1;
+    return ((items - minItems) / span).clamp(0.0, 1.0);
+  }
+
+  int itemsToNextLevel(int items) {
+    if (isMax) return 0;
+    return (nextLevelAt - items).clamp(0, nextLevelAt);
+  }
+}
+
+/// Conquista exibida no perfil.
+class Achievement {
+  final String title;
+  final String description;
+  final String emoji;
+  final bool unlocked;
+
+  const Achievement({
+    required this.title,
+    required this.description,
+    required this.emoji,
+    required this.unlocked,
+  });
 }

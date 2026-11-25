@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController(text: '123456');
   bool _obscurePassword = true;
   bool _isLoading = false;
+  bool _isGoogleLoading = false;
 
   @override
   void dispose() {
@@ -53,6 +54,31 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error)));
+      return;
+    }
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const MainNavScreen()),
+      (route) => false,
+    );
+  }
+
+  Future<void> _handleGoogleLogin() async {
+    setState(() {
+      _isGoogleLoading = true;
+    });
+
+    final error = await context.read<AppState>().loginWithGoogle();
+
+    if (!mounted) return;
+    setState(() {
+      _isGoogleLoading = false;
+    });
+
+    if (error != null) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error)));
       return;
@@ -304,7 +330,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       elevation: 2,
                     ),
-                    onPressed: _isLoading ? null : _handleLogin,
+                    onPressed: (_isLoading || _isGoogleLoading)
+                        ? null
+                        : _handleLogin,
                     child: _isLoading
                         ? const SizedBox(
                             width: 22,
@@ -365,33 +393,52 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    onPressed: _handleLogin,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Google G icon representation
-                        Container(
-                          width: 22,
-                          height: 22,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'G',
-                            style: TextStyle(
-                              color: Color(0xFF4285F4),
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
+                    onPressed: (_isLoading || _isGoogleLoading)
+                        ? null
+                        : _handleGoogleLogin,
+                    child: _isGoogleLoading
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color: AppTheme.primary,
+                              strokeWidth: 2,
                             ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Google G icon representation
+                              Container(
+                                width: 22,
+                                height: 22,
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'G',
+                                  style: TextStyle(
+                                    color: Color(0xFF4285F4),
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                'Entrar com Google',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Entrar com Google',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Disponível no Android, iOS e Web.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppTheme.onSurfaceVariant,
+                      fontSize: 11,
                     ),
                   ),
                 ],

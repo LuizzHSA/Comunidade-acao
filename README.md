@@ -11,13 +11,13 @@ Aplicativo Flutter para aproximar pessoas de iniciativas solidárias. Nele, é p
 - Fluxo demonstrativo para escolher itens e registrar uma doação, com opção de ponto de coleta ou retirada.
 - Histórico de doações, perfil e painel de impacto.
 - Cadastro de campanhas de exemplo.
-- Interface adaptada para celular e uma experiência de desktop com navegação lateral.
+- Interface adaptada para celular (Android e iOS).
 
 ## Pré-requisitos
 
 - [Flutter](https://docs.flutter.dev/get-started/install) instalado e configurado.
 - Uma versão do Flutter cujo Dart SDK satisfaça o requisito `^3.13.0`, definido em `pubspec.yaml`.
-- Um dispositivo ou emulador disponível. Para executar a versão desktop, configure também a plataforma correspondente no Flutter. A compilação para iOS requer macOS e Xcode.
+- Um dispositivo ou emulador Android. A compilação para iOS requer macOS e Xcode.
 
 Confira a instalação com:
 
@@ -46,12 +46,6 @@ flutter devices
 flutter run -d <identificador>
 ```
 
-No Windows, por exemplo, se o suporte à plataforma estiver habilitado:
-
-```bash
-flutter run -d windows
-```
-
 ## Testes e análise
 
 Execute os testes automatizados:
@@ -70,12 +64,11 @@ flutter analyze
 
 ```text
 lib/
-  main.dart                 Inicialização do app e escolha do layout
+  main.dart                 Inicialização do app
   models/                   Modelos de campanhas, doações e perfil
   state/                    Estado compartilhado e dados de demonstração
-  screens/                  Telas para a experiência mobile
-  screens_windows/          Telas e navegação para desktop
-  theme/                    Temas visuais
+  screens/                  Telas do aplicativo
+  theme/                    Tema visual
   widgets/                  Componentes reutilizados e diálogos
 assets/images/              Ícone e imagem da tela de abertura
 docs/                       Materiais de produto e referências visuais
@@ -92,8 +85,9 @@ Para configurar o Firebase em outro ambiente:
 
 1. Registre o app Android no projeto Firebase e confirme que o `applicationId` coincide com o pacote cadastrado.
 2. Ative o provedor **E-mail/senha** no Firebase Authentication.
-3. Crie ou confirme o banco Firestore com o ID `comunidade-em-acao`.
-4. Revise e publique as regras e os índices, se necessário:
+3. Ative também o provedor **Google** e cadastre a impressão digital SHA-1 do app (obtida com `./gradlew signingReport`) para o login com Google funcionar no Android.
+4. Crie ou confirme o banco Firestore com o ID `comunidade-em-acao`.
+5. Revise e publique as regras e os índices, se necessário:
 
    ```bash
    firebase deploy --only firestore --project mobile-vini
@@ -101,7 +95,7 @@ Para configurar o Firebase em outro ambiente:
 
 O comando publica a configuração no projeto Firebase selecionado; revise as regras antes de executá-lo.
 
-Se o Firebase estiver inacessível, o app pode continuar com dados de demonstração em memória. Nesse caso, login ou alterações locais não comprovam que houve autenticação ou gravação na nuvem. A configuração Firebase do código cobre Android, iOS e Web; Windows, macOS e Linux não têm opções Firebase configuradas.
+Se o Firebase estiver inacessível, o app pode continuar com dados de demonstração em memória. Nesse caso, login ou alterações locais não comprovam que houve autenticação ou gravação na nuvem. A configuração Firebase do código cobre Android e iOS.
 
 ## Preparar uma versão Android para publicação
 
@@ -134,9 +128,7 @@ O arquivo gerado fica em `build/app/outputs/bundle/release/app-release.aab`. Par
 
 Na experiência mobile, o acesso às telas principais é feito pela navegação inferior: **Início**, **Doações**, **Impacto** e **Perfil**. O botão de adicionar abre o fluxo de criação de campanha.
 
-No desktop, o app apresenta uma navegação lateral com feed, exploração de campanhas, doações, criação de campanhas, impacto e configurações. O layout desktop é usado por padrão em plataformas desktop ou em janelas largas; a interface também pode ser escolhida pelo estado de preferência do app.
-
-O formulário de entrada serve apenas para demonstrar o fluxo: preencher e-mail e senha permite entrar, sem validar credenciais em um serviço. Os botões de login social e os dados de pagamento exibidos não representam integrações reais.
+O formulário de entrada usa o Firebase Authentication: e-mail/senha e login com Google. Se o Firebase estiver indisponível, o app cai no modo de demonstração local. O login com Google usa o fluxo nativo do Firebase e funciona no Android e iOS. Os dados de pagamento exibidos não representam integrações reais.
 
 ## Tecnologias e dependências principais
 

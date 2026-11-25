@@ -12,7 +12,7 @@ import '../models/models.dart';
 /// - Grava doações e campanhas novas no Firestore.
 /// - Se o Firestore estiver indisponível (sem internet, regras bloqueando,
 ///   projeto não configurado), o app continua funcionando com os dados demo
-///   em memória — nada quebra.
+///   em memória �?" nada quebra.
 class FirestoreService {
   FirestoreService._();
   static final instance = FirestoreService._();
@@ -45,6 +45,16 @@ class FirestoreService {
   }
 
   Future<void> signOut() => _auth.signOut();
+
+  /// Login com Google usando o fluxo nativo do Firebase Auth.
+  ///
+  /// Suportado em Android e iOS. Em plataformas desktop o Firebase
+  /// não implementa esse fluxo e o app orienta a usar e-mail e senha.
+  Future<UserCredential> signInWithGoogle() {
+    final provider = GoogleAuthProvider();
+    provider.setCustomParameters({'prompt': 'select_account'});
+    return _auth.signInWithProvider(provider);
+  }
 
   /// Popular coleções com dados demo se estiverem vazias.
   Future<void> seedIfEmpty({required List<Campaign> demoCampaigns}) async {
